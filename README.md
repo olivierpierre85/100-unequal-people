@@ -19,12 +19,6 @@ For people who want to, they can fill in a questionnaire and see which profile i
 Two axes/lines: Income and Assets. Everyone sits somewhere on that scale, and you can sort profiles by it.
 Tags to filter the “bucket” of Belgians:
 Language
+- Retired vs working
+- Ancestry, etc.
 
-
-Retired vs working
-
-
-Ancestry, etc.
-
-
-**TECH**

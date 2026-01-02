@@ -23,10 +23,10 @@
       </div>
 
       <div class="pt-8">
-        <button class="group relative px-10 py-5 bg-white text-black font-bold text-lg rounded-full overflow-hidden transition-transform duration-300 hover:scale-105 active:scale-95 shadow-[0_0_30px_-5px_rgba(255,255,255,0.3)]">
+        <router-link to="/profiles" class="inline-block group relative px-10 py-5 bg-white text-black font-bold text-lg rounded-full overflow-hidden transition-transform duration-300 hover:scale-105 active:scale-95 shadow-[0_0_30px_-5px_rgba(255,255,255,0.3)]">
           <span class="relative z-10 group-hover:text-white transition-colors duration-300">Explore the 100 Profiles</span>
           <div class="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-0"></div>
-        </button>
+        </router-link>
       </div>
     </div>
   </div>
