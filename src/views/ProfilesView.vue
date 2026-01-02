@@ -6,9 +6,27 @@
           <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-blue-400">
             The 100 Belgians
           </h1>
-          <p class="text-neutral-400 mt-2">Sorted by Net Wealth</p>
+          <p class="text-neutral-400 mt-2">Sorted by {{ sortByLabel }}</p>
         </div>
-        <router-link to="/" class="px-4 py-2 bg-neutral-800 rounded-lg hover:bg-neutral-700 transition">Back</router-link>
+        <div class="flex items-center gap-4">
+          <div class="flex gap-2 bg-neutral-800 p-1 rounded-lg">
+            <button 
+              @click="sortBy = 'wealth'" 
+              :class="sortBy === 'wealth' ? 'bg-neutral-700 text-white' : 'text-neutral-400 hover:text-white'"
+              class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors"
+            >
+              Wealth
+            </button>
+            <button 
+              @click="sortBy = 'income'" 
+              :class="sortBy === 'income' ? 'bg-neutral-700 text-white' : 'text-neutral-400 hover:text-white'"
+              class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors"
+            >
+              Income
+            </button>
+          </div>
+          <router-link to="/" class="px-4 py-2 bg-neutral-800 rounded-lg hover:bg-neutral-700 transition">Back</router-link>
+        </div>
       </header>
 
       <div class="overflow-x-auto bg-neutral-900/50 rounded-2xl border border-white/5 backdrop-blur-sm">
@@ -18,12 +36,24 @@
               <th class="p-4 font-medium">Rank</th>
               <th class="p-4 font-medium">Age / Gender</th>
               <th class="p-4 font-medium">Region</th>
-              <th class="p-4 font-medium text-right">Net Income / Mo</th>
-              <th class="p-4 font-medium text-right">Net Wealth</th>
+              <th 
+                class="p-4 font-medium text-right cursor-pointer hover:text-white transition-colors"
+                @click="sortBy = 'income'"
+              >
+                Net Income / Mo
+                <span v-if="sortBy === 'income'" class="ml-1">▼</span>
+              </th>
+              <th 
+                class="p-4 font-medium text-right cursor-pointer hover:text-white transition-colors"
+                @click="sortBy = 'wealth'"
+              >
+                Net Wealth
+                <span v-if="sortBy === 'wealth'" class="ml-1">▼</span>
+              </th>
             </tr>
           </thead>
           <tbody class="divide-y divide-white/5">
-            <tr v-for="(person, index) in profiles" :key="person.id" class="hover:bg-white/5 transition-colors">
+            <tr v-for="(person, index) in sortedProfiles" :key="person.id" class="hover:bg-white/5 transition-colors">
               <td class="p-4 font-mono text-neutral-500">#{{ index + 1 }}</td>
               <td class="p-4">
                 <div class="font-medium text-white">{{ person.demographics.age }} years</div>
@@ -38,10 +68,10 @@
                   {{ person.demographics.region }}
                 </span>
               </td>
-              <td class="p-4 text-right font-mono">
+              <td class="p-4 text-right font-mono" :class="sortBy === 'income' ? 'text-emerald-400 font-bold' : ''">
                 €{{ formatMoney(person.economics.netMonthlyIncome) }}
               </td>
-              <td class="p-4 text-right font-mono font-bold text-emerald-400">
+              <td class="p-4 text-right font-mono" :class="sortBy === 'wealth' ? 'text-emerald-400 font-bold' : ''">
                 €{{ formatMoney(person.economics.netWealth) }}
               </td>
             </tr>
@@ -53,10 +83,25 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { generateProfiles } from '../utils/generators'
 
 const profiles = ref([])
+const sortBy = ref('wealth')
+
+const sortByLabel = computed(() => {
+  return sortBy.value === 'wealth' ? 'Net Wealth' : 'Net Monthly Income'
+})
+
+const sortedProfiles = computed(() => {
+  return [...profiles.value].sort((a, b) => {
+    if (sortBy.value === 'wealth') {
+      return a.economics.netWealth - b.economics.netWealth
+    } else {
+      return a.economics.netMonthlyIncome - b.economics.netMonthlyIncome
+    }
+  })
+})
 
 onMounted(() => {
   profiles.value = generateProfiles(100)
