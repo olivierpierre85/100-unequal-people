@@ -1,7 +1,7 @@
 // Belgian Demographic & Economic Data (Approximate 2023/2024)
 // HARDCODED PROFILES (Generated once)
 
-const PROFILES = [
+export const profiles = [
     {
         "id": 83,
         "demographics": {
@@ -1403,7 +1403,3 @@ const PROFILES = [
         }
     }
 ];
-
-export function generateProfiles(count = 100) {
-    return PROFILES; // Always returns the same 100 sorted profiles
-}

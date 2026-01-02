@@ -84,9 +84,9 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { generateProfiles } from '../utils/generators'
+import { profiles as profilesData } from '../data/profiles'
 
-const profiles = ref([])
+const profiles = ref(profilesData)
 const sortBy = ref('wealth')
 
 const sortByLabel = computed(() => {
@@ -103,9 +103,7 @@ const sortedProfiles = computed(() => {
   })
 })
 
-onMounted(() => {
-  profiles.value = generateProfiles(100)
-})
+
 
 function formatMoney(amount) {
   return new Intl.NumberFormat('fr-BE').format(amount)
