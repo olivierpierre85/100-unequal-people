@@ -28,3 +28,14 @@ Ancestry, etc.
 
 
 **TECH**
+
+## Deploying to GitHub Pages
+
+This repository is configured to deploy automatically to GitHub Pages with GitHub Actions.
+
+1. Push to the `main` branch.
+2. In GitHub, go to **Settings → Pages**.
+3. Set **Source** to **GitHub Actions**.
+4. Wait for the **Deploy to GitHub Pages** workflow to finish.
+
+The production base path is automatically set to `/100-unequal-people/` when built inside GitHub Actions, so assets resolve correctly on Pages.
