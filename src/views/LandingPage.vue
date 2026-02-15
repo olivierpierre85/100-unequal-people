@@ -14,7 +14,7 @@
           Illustrating inequality through the lives of 100 fictional Belgians.
         </p>
       </header>
-      
+
       <div class="glass-panel p-8 md:p-12 rounded-2xl border border-white/5 bg-white/5 backdrop-blur-md hover:bg-white/10 transition-colors duration-500">
         <p class="text-lg md:text-xl text-neutral-300 leading-relaxed font-light">
           We generate <span class="text-white font-medium">100 profiles</span> based on real income and wealth data.
@@ -23,16 +23,20 @@
       </div>
 
       <div class="pt-8">
-        <button class="group relative px-10 py-5 bg-white text-black font-bold text-lg rounded-full overflow-hidden transition-transform duration-300 hover:scale-105 active:scale-95 shadow-[0_0_30px_-5px_rgba(255,255,255,0.3)]">
-          <span class="relative z-10 group-hover:text-white transition-colors duration-300">Explore the 100 Profiles</span>
+        <RouterLink
+          to="/wealth-pyramid"
+          class="group relative inline-flex px-10 py-5 bg-white text-black font-bold text-lg rounded-full overflow-hidden transition-transform duration-300 hover:scale-105 active:scale-95 shadow-[0_0_30px_-5px_rgba(255,255,255,0.3)]"
+        >
+          <span class="relative z-10 group-hover:text-white transition-colors duration-300">Explore the Wealth Pyramid</span>
           <div class="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-0"></div>
-        </button>
+        </RouterLink>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { RouterLink } from 'vue-router'
 </script>
 
 <style scoped>
