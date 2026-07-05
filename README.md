@@ -38,6 +38,12 @@ Language
   situation (holidays, eating out, phone, concerts, housing — derived in
   `src/data/lifestyle.js`). A "Where would you land?" input places the visitor
   in the parade.
+- **Income by source**: the income view stacks each bar into "from work &
+  pensions" vs "from wealth" (rent, dividends, interest), modelled in
+  `src/data/incomeSources.js` (~3.2% net return on non-primary-home wealth,
+  capped at 85% of income). At the top of the parade, income stops coming from
+  work — the top 10 draw ~60% of income from wealth vs ~3% for the bottom 50.
+  Deep link: `/profiles?view=income`.
 - **Perception gap**: the landing page and profiles view explain why almost
   everyone believes they are middle class (social-circle calibration; Hauser &
   Norton 2017, Bublitz 2020).

@@ -105,6 +105,20 @@
             aria-label="Close profile details"
           >✕</button>
         </div>
+        <div v-if="pinnedSources" class="mt-4">
+          <div class="flex items-baseline justify-between text-xs text-neutral-400">
+            <span>Where the {{ fmtEur(pinnedSources.total) }}/month comes from</span>
+            <span v-if="pinnedSources.fromWealth > 0" class="text-neutral-300" style="font-variant-numeric: tabular-nums">
+              {{ fmtEur(pinnedSources.fromWork) }} work &amp; pensions · {{ fmtEur(pinnedSources.fromWealth) }} wealth ({{ Math.round(pinnedSources.share * 100) }}%)
+            </span>
+            <span v-else class="text-neutral-300">all of it from work &amp; pensions</span>
+          </div>
+          <div class="mt-1.5 flex h-2.5 w-full overflow-hidden rounded-full bg-neutral-800" role="img"
+            :aria-label="`${Math.round(pinnedSources.share * 100)} percent of income from wealth`">
+            <div class="h-full" style="background:#3987e5" :style="{ width: `${100 - pinnedSources.share * 100}%` }"></div>
+            <div class="h-full" style="background:#c98500" :style="{ width: `${pinnedSources.share * 100}%` }"></div>
+          </div>
+        </div>
         <dl class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           <div v-for="item in pinnedLifestyle" :key="item.label" class="rounded-lg bg-neutral-900/60 p-3">
             <dt class="text-xs uppercase tracking-wider text-neutral-500">{{ item.icon }} {{ item.label }}</dt>
@@ -176,6 +190,9 @@
               </td>
               <td class="p-4 text-right font-mono" :class="metric === 'income' ? 'text-emerald-400 font-bold' : ''">
                 {{ fmtEur(person.economics.netMonthlyIncome) }}
+                <div v-if="incomeSources(person).share >= 0.01" class="text-xs font-sans font-normal text-neutral-500">
+                  {{ Math.round(incomeSources(person).share * 100) }}% from wealth
+                </div>
               </td>
               <td
                 class="p-4 text-right font-mono"
@@ -202,11 +219,14 @@
 
 <script setup>
 import { computed, ref } from 'vue'
+import { useRoute } from 'vue-router'
 import { profiles } from '../data/profiles'
 import { lifestyle } from '../data/lifestyle'
+import { incomeSources } from '../data/incomeSources'
 import WealthParade from '../components/WealthParade.vue'
 
-const metric = ref('wealth')
+const route = useRoute()
+const metric = ref(route.query.view === 'income' ? 'income' : 'wealth')
 const pinnedId = ref(null)
 const youIncome = ref(null)
 const youWealth = ref(null)
@@ -243,6 +263,9 @@ const sortedProfiles = computed(() =>
 )
 
 const pinnedPerson = computed(() => profiles.find((p) => p.id === pinnedId.value) ?? null)
+const pinnedSources = computed(() =>
+  pinnedPerson.value ? incomeSources(pinnedPerson.value) : null,
+)
 
 const LIFESTYLE_META = [
   ['housing', '🏠', 'Home'],
@@ -282,12 +305,28 @@ const statTiles = computed(() => {
       note: `The bottom 50 share ${Math.round((100 * bottom50) / total)}%`,
     },
     {
-      label: 'Richest vs median wealth',
-      value: `×${Math.round(wealths[99] / medianW)}`,
-      note: 'And the real top 0.01% is ~1000× richer again',
+      label: "The top 10's income comes",
+      value: `${topCapitalShare.value}% from wealth`,
+      note: `Rent, dividends, interest — for the bottom 50 it's ${bottomCapitalShare.value}%`,
     },
   ]
 })
+
+function capitalShareOf(list) {
+  let wealth = 0
+  let total = 0
+  for (const p of list) {
+    const s = incomeSources(p)
+    wealth += s.fromWealth
+    total += s.total
+  }
+  return Math.round((100 * wealth) / total)
+}
+const byWealthDesc = computed(() =>
+  [...profiles].sort((a, b) => b.economics.netWealth - a.economics.netWealth),
+)
+const topCapitalShare = computed(() => capitalShareOf(byWealthDesc.value.slice(0, 10)))
+const bottomCapitalShare = computed(() => capitalShareOf(byWealthDesc.value.slice(50)))
 
 const fmtEur = (v) =>
   (v < 0 ? '−€' : '€') + new Intl.NumberFormat('fr-BE').format(Math.abs(v))
