@@ -28,6 +28,32 @@
           <div class="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-0"></div>
         </router-link>
       </div>
+
+      <section class="glass-panel text-left p-8 md:p-12 rounded-2xl border border-white/5 bg-white/5 backdrop-blur-md space-y-5">
+        <h2 class="text-2xl md:text-3xl font-bold text-white">Nobody thinks they're rich</h2>
+        <p class="text-neutral-300 leading-relaxed font-light">
+          Ask people where they sit on the ladder and almost everyone — supermarket cashiers
+          and medical specialists alike — answers <span class="italic">"somewhere in the middle"</span>.
+          That's not modesty; it's geometry. We each calibrate "normal" against our own social
+          circle, and our colleagues, family and neighbours mostly earn and own about as much
+          as we do. So the well-off underestimate their position, because they can always point
+          to someone richer — and people struggling overestimate theirs, because everyone
+          around them is struggling too.
+        </p>
+        <p class="text-neutral-300 leading-relaxed font-light">
+          Research keeps confirming it: across European countries, a majority of the highest
+          earners place themselves near the middle of the distribution, and most people wildly
+          underestimate how much the top actually owns
+          <span class="text-neutral-500">(Hauser &amp; Norton 2017; Bublitz 2020)</span>.
+          In Belgium the gap is easy to miss precisely because everyday life looks similar —
+          same supermarkets, same trains — until you compare holidays, homes, and what happens
+          when the washing machine breaks.
+        </p>
+        <p class="text-neutral-300 leading-relaxed font-light">
+          That's what the 100 profiles are for: the whole country, lined up in one room, so you
+          can finally see the ends of the ladder you're standing on.
+        </p>
+      </section>
     </div>
   </div>
 </template>
