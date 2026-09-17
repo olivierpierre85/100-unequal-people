@@ -6,9 +6,14 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "profiles": "node scripts/generate-profiles.mjs",
+    "og-image": "node scripts/generate-og-image.mjs",
+    "smoke": "node scripts/smoke-test.mjs"
   },
   "dependencies": {
+    "@fontsource-variable/bricolage-grotesque": "^5.3.0",
+    "@fontsource-variable/nunito": "^5.3.0",
     "vue": "^3.5.24",
     "vue-router": "^4.6.4"
   },

@@ -9,16 +9,23 @@
 // Belgian statistics (2023/2024), not microdata:
 //
 // INCOME (net monthly income per adult, all sources: wages, pensions,
-// unemployment/integration benefits, self-employment):
+// unemployment/integration benefits, self-employment, capital income):
 //  - Statbel, salary statistics 2024: median net full-time salary ≈ €2,550;
 //    P10 ≈ €2,000 gross → ~€1,850 net; P90 net ≈ €4,000.
-//  - Integration income ("leefloon"/"revenu d'intégration") single person
-//    2024: ≈ €1,263/month. Minimum full-career pension ≈ €1,640 net.
+//  - Integration income ("leefloon" / "revenu d'intégration"), single person,
+//    2024: ≈ €1,260–1,290/month; cohabitant rate ≈ €860. Unemployment and
+//    "inschakelingsuitkering" for a cohabitant: ≈ €550–700.
+//  - Income guarantee for the elderly (IGO / GRAPA), single person, 2024:
+//    ≈ €1,500/month. That is a floor: no pensioner among the 100 lives on
+//    less than ~€1,300, so the lowest percentiles are students, part-timers
+//    and jobseekers living with family, not 80-year-olds.
 //  - Median pension is well below the median wage (≈ €1,600–1,800 net), and
 //    ~20% of adults live mainly on replacement income, which pulls the
 //    all-adults median below the workers' median (≈ €2,250 here).
 //  - Top: a net wage of €8,000/month already requires a gross package north
-//    of €200k/year — roughly the top 1% of earners (Statbel fiscal stats).
+//    of €200k/year — roughly the top 1% threshold (Statbel fiscal stats).
+//    The *average* inside the top 1% is far higher (dividends, director's
+//    fees): our richest person represents that average at ≈ €14,500 net.
 //
 // WEALTH (net wealth per adult: property + savings + investments − debts):
 //  - NBB / ECB Household Finance and Consumption Survey (HFCS), Belgian
@@ -35,7 +42,14 @@
 // shares), genders and jobs are drawn to be plausible for each income level;
 // wealth rank is correlated with income rank and age (you accumulate wealth
 // over a lifetime), which is why some low-income retirees are wealthy and
-// some high-earning 25-year-olds own almost nothing.
+// some high-earning 25-year-olds own almost nothing. At the very top the two
+// coincide: the five highest earners are also the five wealthiest, because
+// large fortunes *produce* large incomes (rent, dividends), and because it
+// keeps src/data/incomeSources.js consistent — nobody's wealth is assumed to
+// yield more than they actually earn.
+//
+// Job titles are emitted as keys (see src/data/jobs.js) so the interface can
+// show them in Dutch, French or English.
 
 import { writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
@@ -50,20 +64,26 @@ function mulberry32(seed) {
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296
   }
 }
-const rnd = mulberry32(20260705)
+// SEED=123 node scripts/generate-profiles.mjs tries another draw; the default
+// was chosen for a balanced age / retiree / region mix.
+const SEED = Number(process.env.SEED) || 20260920
+const rnd = mulberry32(SEED)
 const pick = (arr) => arr[Math.floor(rnd() * arr.length)]
 
 // ── distribution anchors (percentile → value), linear interpolation ────────
 const INCOME_ANCHORS = [
   [0, 300], [5, 800], [10, 1200], [20, 1450], [30, 1700], [40, 1950],
   [50, 2250], [60, 2550], [70, 2900], [80, 3350], [90, 4100], [95, 5000],
-  [99, 8000], [99.5, 11000], [100, 15000],
+  [99, 8000], [99.5, 14500], [100, 25000],
 ]
 const WEALTH_ANCHORS = [
   [0, -60000], [1, -25000], [5, -2000], [10, 500], [20, 8000], [30, 35000],
   [40, 85000], [50, 150000], [60, 215000], [70, 300000], [80, 420000],
   [90, 650000], [95, 950000], [99, 2400000], [99.5, 4800000], [100, 8000000],
 ]
+
+// No pensioner below this net monthly income (IGO/GRAPA floor, see above).
+const MIN_PENSIONER_INCOME = 1300
 
 function interpolate(anchors, p) {
   for (let i = 1; i < anchors.length; i++) {
@@ -81,7 +101,7 @@ function roundWealth(v) {
   return Math.round(v / step) * step
 }
 
-// ── ages, conditioned lightly on income percentile ──────────────────────────
+// ── ages, conditioned on income percentile ──────────────────────────────────
 const AGE_BANDS = [
   { lo: 18, hi: 24, w: 10.5 }, { lo: 25, hi: 34, w: 16 },
   { lo: 35, hi: 44, w: 16 }, { lo: 45, hi: 54, w: 16.5 },
@@ -91,9 +111,14 @@ const AGE_BANDS = [
 function drawAge(incomePct) {
   const weights = AGE_BANDS.map((b) => {
     let w = b.w
-    if (incomePct < 12) { if (b.lo === 18) w *= 3; if (b.lo === 75) w *= 1.4 }
-    else if (incomePct < 35) { if (b.lo >= 65) w *= 1.8; if (b.lo === 18) w *= 1.3 }
-    else if (incomePct > 80) {
+    if (incomePct < 15) {
+      // below ≈ €1,300: no pensioners (IGO/GRAPA floor); mostly the young
+      if (b.lo >= 65) w = 0
+      if (b.lo === 18) w *= 3
+    } else if (incomePct < 35) {
+      if (b.lo >= 65) w *= 1.4
+      if (b.lo === 18) w *= 1.2
+    } else if (incomePct > 80) {
       if (b.lo >= 35 && b.hi <= 64) w *= 2.2
       if (b.lo === 18) w *= 0.1
       if (b.lo === 75) w *= 0.5
@@ -106,6 +131,9 @@ function drawAge(incomePct) {
     r -= weights[i]
     if (r <= 0) {
       const b = AGE_BANDS[i]
+      // 18–19-year-olds are only ~2.5% of adults: skew the youngest band
+      // towards its older end.
+      if (b.lo === 18) return 24 - Math.floor(rnd() * rnd() * 7)
       return b.lo + Math.floor(rnd() * (b.hi - b.lo + 1))
     }
   }
@@ -113,59 +141,99 @@ function drawAge(incomePct) {
 }
 
 // ── names (Belgian mix: Dutch, French, Italian/Turkish/Moroccan heritage) ───
+// Drawn without replacement so that every one of the 100 has a unique name.
 const NAMES = {
   nl: {
-    Male: ['Jan', 'Wim', 'Bart', 'Koen', 'Jef', 'Lars', 'Dries', 'Tom', 'Stijn', 'Luc', 'Wout', 'Robbe', 'Marc', 'Seppe', 'Mehmet', 'Youssef'],
-    Female: ['Els', 'An', 'Katrien', 'Lore', 'Femke', 'Lien', 'Tine', 'Greet', 'Ilse', 'Noor', 'Lotte', 'Mia', 'Rita', 'Sofie', 'Ayşe', 'Yasmina'],
+    Male: ['Jan', 'Wim', 'Bart', 'Koen', 'Jef', 'Lars', 'Dries', 'Tom', 'Stijn', 'Luc',
+      'Wout', 'Robbe', 'Marc', 'Seppe', 'Mehmet', 'Youssef', 'Pieter', 'Jonas', 'Bram',
+      'Sander', 'Wannes', 'Geert', 'Dirk', 'Frank', 'Rudi', 'Ludo', 'Kris', 'Steven',
+      'Arne', 'Jasper', 'Milan', 'Senne', 'Bilal', 'Emir', 'Tuur', 'Karel', 'Joris',
+      'Bert', 'Hans', 'Gert'],
+    Female: ['Els', 'An', 'Katrien', 'Lore', 'Femke', 'Lien', 'Tine', 'Greet', 'Ilse',
+      'Noor', 'Lotte', 'Mia', 'Rita', 'Sofie', 'Ayşe', 'Yasmina', 'Hanne', 'Marieke',
+      'Evi', 'Anke', 'Leen', 'Veerle', 'Hilde', 'Marleen', 'Godelieve', 'Magda',
+      'Jolien', 'Fien', 'Lieze', 'Nora', 'Amber', 'Elke', 'Kaat', 'Fatma', 'Zeynep',
+      'Inge', 'Griet', 'Ria', 'Christel', 'Jana'],
   },
   fr: {
-    Male: ['Olivier', 'Julien', 'Nicolas', 'Michel', 'Pierre', 'Antoine', 'Hugo', 'Théo', 'Maxime', 'Cédric', 'Louis', 'Marcel', 'Enzo', 'Salvatore', 'Mohamed', 'Karim'],
-    Female: ['Camille', 'Sophie', 'Isabelle', 'Nathalie', 'Émilie', 'Chantal', 'Monique', 'Léa', 'Manon', 'Julie', 'Jeanne', 'Colette', 'Giulia', 'Fatima', 'Aïcha', 'Aurélie'],
+    Male: ['Olivier', 'Julien', 'Nicolas', 'Michel', 'Pierre', 'Antoine', 'Hugo', 'Théo',
+      'Maxime', 'Cédric', 'Louis', 'Marcel', 'Enzo', 'Salvatore', 'Mohamed', 'Karim',
+      'Benoît', 'François', 'Jean', 'Philippe', 'Christophe', 'Laurent', 'Sébastien',
+      'Adrien', 'Romain', 'Quentin', 'Nathan', 'Lucas', 'Roger', 'André', 'Marco',
+      'Ahmed', 'Ilias', 'Yannick', 'Stéphane', 'Fabrice', 'Xavier', 'Arnaud', 'Vincent',
+      'Loïc'],
+    Female: ['Camille', 'Sophie', 'Isabelle', 'Nathalie', 'Émilie', 'Chantal', 'Monique',
+      'Léa', 'Manon', 'Julie', 'Jeanne', 'Colette', 'Giulia', 'Fatima', 'Aïcha',
+      'Aurélie', 'Anne', 'Marie', 'Céline', 'Valérie', 'Véronique', 'Sandrine',
+      'Catherine', 'Christine', 'Laurence', 'Amandine', 'Charlotte', 'Chloé', 'Clara',
+      'Élise', 'Louise', 'Zoé', 'Inès', 'Nadia', 'Samira', 'Francesca', 'Jacqueline',
+      'Josiane', 'Martine', 'Pauline'],
   },
-  de: { Male: ['Stefan'], Female: ['Heidi'] },
+  de: { Male: ['Stefan', 'Klaus'], Female: ['Heidi', 'Ursula'] },
+}
+const usedNames = new Set()
+function drawName(pool) {
+  const free = pool.filter((n) => !usedNames.has(n))
+  const name = pick(free.length ? free : pool)
+  usedNames.add(name)
+  return name
 }
 
-// ── jobs by net-income band ─────────────────────────────────────────────────
+// ── jobs by net-income band (keys → titles in src/data/jobs.js) ─────────────
 const JOB_BANDS = [
-  { max: 1400, jobs: ['On integration income (leefloon)', 'Job seeker', 'Part-time cleaner', 'Job seeker'] },
-  { max: 1800, jobs: ['Part-time retail worker', 'Hairdresser', 'Part-time kitchen help', 'Agency temp worker'] },
-  { max: 2200, jobs: ['Supermarket cashier', 'Delivery driver', 'Care assistant', 'Warehouse worker'] },
-  { max: 2600, jobs: ['Truck driver', 'Administrative assistant', 'Childcare worker', 'Postal worker', 'Bus driver'] },
-  { max: 3000, jobs: ['Nurse', 'Primary-school teacher', 'Electrician', 'Police officer', 'Train conductor'] },
-  { max: 3500, jobs: ['Secondary-school teacher', 'Accountant', 'REGIONAL_CIVIL_SERVANT', 'Lab technician', 'Social worker'] },
-  { max: 4200, jobs: ['IT developer', 'Engineer', 'Pharmacist', 'Federal civil servant', 'Project manager'] },
-  { max: 5200, jobs: ['Senior engineer', 'Self-employed plumber', 'University lecturer', 'IT consultant (self-employed)'] },
-  { max: 6500, jobs: ['General practitioner', 'Lawyer', 'Senior manager', 'Self-employed architect'] },
-  { max: 9000, jobs: ['Medical specialist', 'Member of Parliament', 'Notary', 'Company director'] },
-  { max: Infinity, jobs: ['Company owner', 'Self-employed surgeon', 'CEO of an SME'] },
+  { max: 1400, jobs: ['integration_income', 'job_seeker', 'part_time_cleaner', 'job_seeker'] },
+  { max: 1800, jobs: ['part_time_retail', 'hairdresser', 'part_time_kitchen', 'temp_worker'] },
+  { max: 2200, jobs: ['cashier', 'delivery_driver', 'care_assistant', 'warehouse_worker'] },
+  { max: 2600, jobs: ['truck_driver', 'admin_assistant', 'childcare_worker', 'postal_worker', 'bus_driver'] },
+  { max: 3000, jobs: ['nurse', 'primary_teacher', 'electrician', 'police_officer', 'train_conductor'] },
+  { max: 3500, jobs: ['secondary_teacher', 'accountant', 'REGIONAL_CIVIL_SERVANT', 'lab_technician', 'social_worker'] },
+  { max: 4200, jobs: ['it_developer', 'engineer', 'pharmacist', 'federal_civil_servant', 'project_manager'] },
+  { max: 5200, jobs: ['senior_engineer', 'plumber_self_employed', 'university_lecturer', 'it_consultant'] },
+  { max: 6500, jobs: ['gp', 'lawyer', 'senior_manager', 'architect_self_employed'] },
+  { max: 9000, jobs: ['medical_specialist', 'notary', 'company_director', 'mp'] },
+  { max: Infinity, jobs: ['company_owner'] },
 ]
 const RETIRED_FORMER = [
-  { max: 1500, former: ['factory worker', 'shop assistant', 'farm worker', 'seamstress'] },
-  { max: 2100, former: ['postal worker', 'nurse', 'mechanic', 'secretary'] },
-  { max: 3000, former: ['teacher', 'civil servant', 'railway engineer', 'bank clerk'] },
-  { max: Infinity, former: ['company manager', 'doctor', 'notary', 'senior civil servant'] },
+  { max: 1500, former: ['factory_worker', 'shop_assistant', 'farm_worker', 'textile_worker'] },
+  { max: 2100, former: ['postal_worker', 'nurse', 'mechanic', 'secretary'] },
+  { max: 3000, former: ['teacher', 'civil_servant', 'train_driver', 'bank_clerk'] },
+  { max: Infinity, former: ['company_manager', 'doctor', 'notary', 'senior_civil_servant'] },
 ]
 const CIVIL_SERVANT = {
-  Flanders: 'Flemish government civil servant',
-  Wallonia: 'Walloon Region civil servant',
-  Brussels: 'Brussels municipal civil servant',
+  Flanders: 'civil_servant_fl',
+  Wallonia: 'civil_servant_wa',
+  Brussels: 'civil_servant_bxl',
 }
 
 function assignWork(age, income, incomePct, region) {
-  if (age >= 66 || (age >= 60 && rnd() < 0.5)) {
+  const canRetire = income >= MIN_PENSIONER_INCOME
+  if (canRetire && (age >= 66 || (age >= 60 && rnd() < 0.5))) {
     const band = RETIRED_FORMER.find((b) => income <= b.max)
-    return { status: 'retired', job: `Retired — former ${pick(band.former)}` }
+    return { status: 'retired', job: 'retired', former: pick(band.former) }
   }
-  if (age <= 23 && incomePct < 22) {
-    return { status: 'student', job: rnd() < 0.6 ? 'Student (part-time job)' : 'Student' }
+  if (age <= 24 && incomePct < 22) {
+    return { status: 'student', job: rnd() < 0.6 ? 'student_job' : 'student' }
   }
   if (incomePct < 9) {
-    return { status: 'unemployed', job: rnd() < 0.5 ? 'Job seeker' : 'On integration income (leefloon)' }
+    // Below ≈ €800 hardly any benefit fits: these are mostly adults without
+    // an income of their own (a partner at home) or on cohabitant rates.
+    if (income < 800) {
+      return { status: 'inactive', job: rnd() < 0.6 ? 'homemaker' : 'job_seeker_cohabiting' }
+    }
+    // Below ≈ €1,000 only the cohabitant benefit rates fit: living with
+    // parents or a partner.
+    if (income < 1000) {
+      return {
+        status: 'unemployed',
+        job: rnd() < 0.5 ? 'job_seeker_cohabiting' : 'integration_income_cohabiting',
+      }
+    }
+    return { status: 'unemployed', job: rnd() < 0.5 ? 'job_seeker' : 'integration_income' }
   }
   const band = JOB_BANDS.find((b) => income <= b.max)
   let job = pick(band.jobs)
   if (job === 'REGIONAL_CIVIL_SERVANT') job = CIVIL_SERVANT[region]
-  if (job === 'Job seeker' || job === 'On integration income (leefloon)') {
+  if (job === 'job_seeker' || job === 'integration_income') {
     return { status: 'unemployed', job }
   }
   return { status: 'working', job }
@@ -213,6 +281,17 @@ const wealthScore = people.map((p) => ({
 wealthScore.sort((a, b) => a.score - b.score)
 const wealthRank = new Map(wealthScore.map((s, idx) => [s.id, idx + 1]))
 
+function moveToRank(id, rank) {
+  const holder = [...wealthRank].find(([, r]) => r === rank)[0]
+  const old = wealthRank.get(id)
+  wealthRank.set(id, rank)
+  wealthRank.set(holder, old)
+}
+
+// The very top: the five highest earners hold the five largest fortunes, in
+// the same order (see header). Below them the age/income mix takes over.
+for (let id = 96; id <= 100; id++) moveToRank(id, id)
+
 // Deeply negative wealth (bottom ranks) means real debt — implausible for
 // under-25s, who simply own ~nothing yet. Swap those ranks upward to an
 // older person from the lower-middle ranks.
@@ -244,7 +323,7 @@ const profiles = people.map((p) => {
   const work = assignWork(p.age, income, p.incomePercentile, p.region)
   return {
     id: p.id,
-    name: pick(namePool),
+    name: drawName(namePool),
     demographics: { age: p.age, gender: p.gender, region: p.region, language },
     work,
     economics: {
@@ -265,6 +344,9 @@ const header = `// 100 fictional Belgian adults — one per income percentile (0
 // are documented in that script (Statbel salary/fiscal statistics 2024,
 // NBB/ECB Household Finance and Consumption Survey). Values are illustrative
 // interpolations of published aggregates, not real microdata.
+//
+// work.job (and work.former for pensioners) are keys into src/data/jobs.js,
+// which holds the Dutch, French and English titles.
 `
 
 const out = `${header}

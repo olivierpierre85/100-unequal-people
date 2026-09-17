@@ -1,3 +1,89 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html {
+    color-scheme: light;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-paper font-sans text-ink antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3 {
+    @apply font-display font-extrabold tracking-tight;
+  }
+  ::selection {
+    background: #eceaff;
+  }
+  /* number inputs without spinners: the values are typed, not nudged */
+  input[type='number'] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-3xl border border-rule bg-card shadow-tile;
+  }
+  .btn {
+    @apply inline-flex items-center gap-1.5 rounded-full border-2 border-ink/10 bg-card px-4 py-2 text-sm font-bold text-ink transition hover:-translate-y-0.5 hover:border-ink/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/50;
+  }
+  .btn-primary {
+    @apply inline-flex items-center gap-2 rounded-full bg-coral px-6 py-3 text-base font-bold text-white shadow-pop transition hover:-translate-y-0.5 hover:bg-coral-lift focus:outline-none focus-visible:ring-2 focus-visible:ring-coral/60;
+  }
+  .field {
+    @apply block w-full rounded-xl border-2 border-rule bg-white px-3 py-2.5 text-ink placeholder-faint transition focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/25;
+  }
+  .field-sm {
+    @apply block w-full rounded-lg border border-rule bg-white px-2.5 py-1.5 text-sm text-ink placeholder-faint transition focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/25;
+  }
+  .step-badge {
+    @apply inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-ink font-display text-sm font-extrabold text-paper;
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* the "where do you think you stand" slider */
+  .slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 10px;
+    border-radius: 999px;
+    background: linear-gradient(to right, #eceaff, #5b4bff);
+    outline: none;
+    cursor: pointer;
+  }
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #ff5a36;
+    border: 3px solid #ffffff;
+    box-shadow: 0 3px 10px rgba(255, 90, 54, 0.45);
+    cursor: grab;
+  }
+  .slider::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #ff5a36;
+    border: 3px solid #ffffff;
+    box-shadow: 0 3px 10px rgba(255, 90, 54, 0.45);
+    cursor: grab;
+  }
+  .slider:focus-visible {
+    box-shadow: 0 0 0 4px rgba(91, 75, 255, 0.3);
+  }
+}

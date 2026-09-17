@@ -1,42 +1,50 @@
 <template>
   <div
     ref="wrapper"
-    class="relative outline-none select-none"
+    class="relative select-none rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
     tabindex="0"
     role="group"
-    aria-label="Interactive chart of 100 Belgian profiles, poorest to richest. Use the left and right arrow keys to browse people; press Escape to deselect. All values are also in the table below."
+    :aria-label="t('parade.aria')"
     @keydown="onKeydown"
+    @focus="focused = true"
+    @blur="focused = false"
     @pointerleave="hoverIndex = null"
   >
-    <!-- legend: only the income view has two series -->
-    <div v-if="metric === 'income'" class="mb-2 flex flex-wrap gap-x-5 gap-y-1 text-xs text-neutral-400">
-      <span class="inline-flex items-center gap-1.5">
-        <span class="h-2.5 w-2.5 rounded-sm" :style="{ background: SEG_COLORS.work.base }"></span>
-        From work &amp; pensions
-      </span>
-      <span class="inline-flex items-center gap-1.5">
-        <span class="h-2.5 w-2.5 rounded-sm" :style="{ background: SEG_COLORS.capital.base }"></span>
-        From wealth — rent, dividends, interest
+    <!-- legend: the income view has two series; the wealth view flags debt -->
+    <div class="mb-2 flex min-h-[1rem] flex-wrap gap-x-5 gap-y-1 text-xs text-muted">
+      <template v-if="metric === 'income'">
+        <span class="inline-flex items-center gap-1.5">
+          <span class="h-2.5 w-2.5 rounded-sm" :style="{ background: COLORS.work.base }"></span>
+          {{ t('parade.legendWork') }}
+        </span>
+        <span class="inline-flex items-center gap-1.5">
+          <span class="h-2.5 w-2.5 rounded-sm" :style="{ background: COLORS.capital.base }"></span>
+          {{ t('parade.legendCapital') }}
+        </span>
+      </template>
+      <span v-else-if="hasNegative" class="inline-flex items-center gap-1.5">
+        <span class="h-2.5 w-2.5 rounded-sm" :style="{ background: COLORS.neg.base }"></span>
+        {{ t('parade.legendDebt') }}
       </span>
     </div>
 
     <svg
-      :viewBox="`0 0 ${W} ${H}`"
-      class="block w-full h-auto"
+      :viewBox="`0 0 ${G.W} ${G.H}`"
+      class="block h-auto w-full touch-pan-y"
       @pointermove="onPointerMove"
       @pointerdown="onPointerDown"
     >
       <!-- gridlines + ticks -->
       <g v-for="tick in ticks" :key="tick">
         <line
-          :x1="M.left" :x2="W - M.right" :y1="yFor(tick)" :y2="yFor(tick)"
-          :stroke="tick === 0 ? '#383835' : '#2c2c2a'" stroke-width="1"
+          :x1="G.M.left" :x2="G.W - G.M.right" :y1="yFor(tick)" :y2="yFor(tick)"
+          :stroke="tick === 0 ? '#c9bfa8' : '#efe3cc'" stroke-width="1"
         />
         <text
-          :x="M.left - 8" :y="yFor(tick) + 3.5"
-          text-anchor="end" fill="#898781" font-size="11"
+          :x="G.M.left - 6" :y="yFor(tick) + G.font * 0.35"
+          text-anchor="end" fill="#665f7d" :font-size="G.font"
           style="font-variant-numeric: tabular-nums"
-        >{{ fmtCompact(tick) }}</text>
+        >{{ fmtCompact(tick, locale) }}</text>
       </g>
 
       <!-- one bar per person, rank order; income view stacks work/wealth -->
@@ -50,48 +58,69 @@
         />
       </g>
 
-      <!-- 'you' marker: neutral reference line, direct-labeled -->
+      <!-- 'you' marker: coral line with a paper halo, direct-labeled -->
       <g v-if="youMarker">
         <line
-          :x1="youMarker.x" :x2="youMarker.x" :y1="M.top + 14" :y2="yFor(0)"
-          stroke="#ffffff" stroke-width="2" opacity="0.9"
+          :x1="youMarker.x" :x2="youMarker.x" :y1="G.M.top + 14" :y2="yFor(0)"
+          stroke="#fff8ec" stroke-width="6" opacity="0.95"
         />
-        <circle :cx="youMarker.x" :cy="M.top + 14" r="4.5" fill="#ffffff" stroke="#171717" stroke-width="2" />
+        <line
+          :x1="youMarker.x" :x2="youMarker.x" :y1="G.M.top + 14" :y2="yFor(0)"
+          stroke="#ff5a36" stroke-width="2.5"
+        />
+        <circle :cx="youMarker.x" :cy="G.M.top + 14" r="5" fill="#ff5a36" stroke="#fff8ec" stroke-width="2" />
         <text
-          :x="youMarker.x" :y="M.top + 4" fill="#ffffff" font-size="11.5" font-weight="600"
-          :text-anchor="youMarker.x > W - 60 ? 'end' : youMarker.x < M.left + 30 ? 'start' : 'middle'"
-        >You</text>
+          :x="youMarker.x" :y="G.M.top + 4" fill="#1f1b3a" :font-size="G.font + 0.5" font-weight="700"
+          :text-anchor="youMarker.x > G.W - 40 ? 'end' : youMarker.x < G.M.left + 20 ? 'start' : 'middle'"
+        >{{ t('parade.you') }}</text>
       </g>
     </svg>
 
-    <!-- tooltip (hover or keyboard focus); everything in it is also in the table -->
+    <!-- tooltip while hovering or browsing with the keyboard; the pinned
+         person's full card sits under the chart, so nothing is lost -->
     <div
       v-if="activePerson"
-      class="pointer-events-none absolute top-1 z-10 w-60 -translate-x-1/2 rounded-lg border border-white/10 bg-neutral-800/95 p-3 shadow-xl backdrop-blur-sm"
+      class="pointer-events-none absolute top-1 z-10 w-60 max-w-full -translate-x-1/2 rounded-lg border border-rule bg-white p-3 shadow-lg"
       :style="{ left: tooltipLeft }"
     >
-      <div class="text-lg font-semibold text-white" style="font-variant-numeric: tabular-nums">
-        {{ fmtEur(valueOf(activePerson)) }}<span class="text-xs font-normal text-neutral-400"> {{ metric === 'income' ? '/ month' : 'net wealth' }}</span>
+      <div class="text-lg font-semibold text-ink" style="font-variant-numeric: tabular-nums">
+        {{ fmtEur(valueOf(activePerson), locale) }}<span class="text-xs font-normal text-muted"> {{ metric === 'income' ? t('parade.perMonth') : t('parade.netWealth') }}</span>
       </div>
-      <div class="mt-1 text-sm text-neutral-300">
-        {{ activePerson.name }}, {{ activePerson.demographics.age }} — {{ activePerson.work.job }}
+      <div class="mt-1 text-sm text-ink">
+        {{ activePerson.name }}, {{ activePerson.demographics.age }}
       </div>
-      <div class="text-xs text-neutral-500">{{ activePerson.demographics.region }}</div>
-      <div class="mt-2 border-t border-white/10 pt-2 text-xs text-neutral-400">
-        <div class="flex justify-between"><span>Income</span><span class="text-neutral-200" style="font-variant-numeric: tabular-nums">{{ fmtEur(activePerson.economics.netMonthlyIncome) }}/mo</span></div>
-        <div class="flex justify-between"><span class="inline-flex items-center gap-1"><span class="h-2 w-2 rounded-sm" :style="{ background: SEG_COLORS.capital.base }"></span>of which from wealth</span><span class="text-neutral-200" style="font-variant-numeric: tabular-nums">{{ fmtEur(activeSources.fromWealth) }} ({{ Math.round(activeSources.share * 100) }}%)</span></div>
-        <div class="flex justify-between"><span>Wealth</span><span class="text-neutral-200" style="font-variant-numeric: tabular-nums">{{ fmtEur(activePerson.economics.netWealth) }}</span></div>
+      <div class="text-xs text-muted">
+        {{ jobTitle(activePerson, locale) }} · {{ t(`regions.${activePerson.demographics.region}`) }}
       </div>
-      <div class="mt-1.5 text-xs text-neutral-500">
-        {{ metric === 'income' ? 'Earns more than' : 'Owns more than' }} {{ activeRank }} of the 100
+      <div class="mt-2 border-t border-rule pt-2 text-xs text-muted">
+        <div class="flex justify-between gap-2">
+          <span>{{ t('parade.tipIncome') }}</span>
+          <span class="text-ink" style="font-variant-numeric: tabular-nums">{{ fmtEur(activePerson.economics.netMonthlyIncome, locale) }} {{ t('parade.perMonth') }}</span>
+        </div>
+        <div class="flex justify-between gap-2">
+          <span class="inline-flex items-center gap-1">
+            <span class="h-2 w-2 rounded-sm" :style="{ background: COLORS.capital.base }"></span>{{ t('parade.tipFromWealth') }}
+          </span>
+          <span class="text-ink" style="font-variant-numeric: tabular-nums">{{ fmtEur(activeSources.fromWealth, locale) }} ({{ Math.round(activeSources.share * 100) }}%)</span>
+        </div>
+        <div class="flex justify-between gap-2">
+          <span>{{ t('parade.tipWealth') }}</span>
+          <span class="text-ink" style="font-variant-numeric: tabular-nums">{{ fmtEur(activePerson.economics.netWealth, locale) }}</span>
+        </div>
+      </div>
+      <div class="mt-1.5 text-xs text-muted">
+        {{ metric === 'income' ? t('parade.earnsMore', { n: activeRank }) : t('parade.ownsMore', { n: activeRank }) }}
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { incomeSources } from '../data/incomeSources'
+import { jobTitle } from '../data/jobs'
+import { t, locale } from '../i18n'
+import { fmtEur, fmtCompact } from '../utils/format'
 
 const props = defineProps({
   people: { type: Array, required: true },
@@ -102,20 +131,35 @@ const props = defineProps({
 })
 const emit = defineEmits(['update:pinnedId'])
 
-const W = 1000
-const H = 320
-const M = { left: 58, right: 12, top: 20, bottom: 10 }
-const plotW = W - M.left - M.right
-const slotW = plotW / 100
-const barW = slotW - 2.4 // ≥2px surface gap between neighbours
-
-const SEG_COLORS = {
-  work: { base: '#3987e5', lift: '#6da7ec' },
-  capital: { base: '#c98500', lift: '#eda100' },
+const COLORS = {
+  work: { base: '#5b4bff', lift: '#8a7dff' },
+  capital: { base: '#ffb000', lift: '#ffc63d' },
+  neg: { base: '#e5484d', lift: '#f0686c' },
 }
 
-const hoverIndex = ref(null)
+// ── geometry: a narrower, taller viewBox on phones so ticks stay legible ────
 const wrapper = ref(null)
+const narrow = ref(false)
+let observer = null
+onMounted(() => {
+  if (typeof ResizeObserver === 'undefined' || !wrapper.value) return
+  observer = new ResizeObserver(([entry]) => {
+    narrow.value = entry.contentRect.width < 560
+  })
+  observer.observe(wrapper.value)
+})
+onBeforeUnmount(() => observer?.disconnect())
+
+const G = computed(() =>
+  narrow.value
+    ? { W: 520, H: 400, M: { left: 48, right: 8, top: 22, bottom: 8 }, gap: 1.2, font: 12 }
+    : { W: 1000, H: 320, M: { left: 62, right: 12, top: 20, bottom: 10 }, gap: 2.4, font: 11 },
+)
+const slotW = computed(() => (G.value.W - G.value.M.left - G.value.M.right) / 100)
+const barW = computed(() => slotW.value - G.value.gap)
+
+const hoverIndex = ref(null)
+const focused = ref(false)
 
 const valueOf = (p) =>
   props.metric === 'income' ? p.economics.netMonthlyIncome : p.economics.netWealth
@@ -123,11 +167,13 @@ const valueOf = (p) =>
 const sorted = computed(() =>
   [...props.people].sort((a, b) => valueOf(a) - valueOf(b) || a.id - b.id),
 )
+const hasNegative = computed(() => sorted.value.some((p) => valueOf(p) < 0))
 
 const yMin = computed(() => Math.min(0, ...sorted.value.map(valueOf)))
 const yMax = computed(() => Math.max(...sorted.value.map(valueOf)) * 1.02)
 
 function yFor(v) {
+  const { H, M } = G.value
   const span = yMax.value - yMin.value
   return M.top + (1 - (v - yMin.value) / span) * (H - M.top - M.bottom)
 }
@@ -137,40 +183,43 @@ const ticks = computed(() => {
   const mag = 10 ** Math.floor(Math.log10(rawStep))
   const step = [1, 2, 2.5, 5, 10].map((m) => m * mag).find((s) => s >= rawStep)
   const out = []
-  for (let t = 0; t <= yMax.value; t += step) out.push(t)
+  for (let v = 0; v <= yMax.value; v += step) out.push(v)
   return out
 })
 
 function xLeft(i) {
-  return M.left + i * slotW + (slotW - barW) / 2
+  return G.value.M.left + i * slotW.value + (slotW.value - barW.value) / 2
 }
 
 // segment between two pixel rows; corners rounded at the data end only
 function segPath(i, yTop, yBot, roundedTop) {
   const x = xLeft(i)
+  const w = barW.value
   const h = yBot - yTop
-  if (h < 0.75) return `M ${x} ${yBot - 0.75} h ${barW} v 0.75 h ${-barW} Z`
-  if (!roundedTop) return `M ${x} ${yBot} V ${yTop} H ${x + barW} V ${yBot} Z`
-  const r = Math.min(3, h, barW / 2)
-  return `M ${x} ${yBot} V ${yTop + r} Q ${x} ${yTop} ${x + r} ${yTop} H ${x + barW - r} Q ${x + barW} ${yTop} ${x + barW} ${yTop + r} V ${yBot} Z`
+  if (h < 0.75) return `M ${x} ${yBot - 0.75} h ${w} v 0.75 h ${-w} Z`
+  if (!roundedTop) return `M ${x} ${yBot} V ${yTop} H ${x + w} V ${yBot} Z`
+  const r = Math.min(3, h, w / 2)
+  return `M ${x} ${yBot} V ${yTop + r} Q ${x} ${yTop} ${x + r} ${yTop} H ${x + w - r} Q ${x + w} ${yTop} ${x + w} ${yTop + r} V ${yBot} Z`
 }
 
 // full bar for the wealth view (handles negative values)
 function barPath(i, v) {
   const x = xLeft(i)
+  const w = barW.value
   const y0 = yFor(0)
   const y1 = yFor(v)
   const h = Math.abs(y0 - y1)
-  const r = Math.min(3, h, barW / 2)
-  if (h < 0.75) return `M ${x} ${y0 - 0.75} h ${barW} v 0.75 h ${-barW} Z`
+  const r = Math.min(3, h, w / 2)
+  if (h < 0.75) return `M ${x} ${y0 - 0.75} h ${w} v 0.75 h ${-w} Z`
   if (v >= 0) return segPath(i, y1, y0, true)
-  return `M ${x} ${y0} V ${y1 - r} Q ${x} ${y1} ${x + r} ${y1} H ${x + barW - r} Q ${x + barW} ${y1} ${x + barW} ${y1 - r} V ${y0} Z`
+  return `M ${x} ${y0} V ${y1 - r} Q ${x} ${y1} ${x + r} ${y1} H ${x + w - r} Q ${x + w} ${y1} ${x + w} ${y1 - r} V ${y0} Z`
 }
 
 const bars = computed(() =>
   sorted.value.map((p, i) => {
     if (props.metric !== 'income') {
-      return { person: p, segs: [{ kind: 'work', d: barPath(i, valueOf(p)) }] }
+      const v = valueOf(p)
+      return { person: p, segs: [{ kind: v < 0 ? 'neg' : 'work', d: barPath(i, v) }] }
     }
     const s = incomeSources(p)
     const y0 = yFor(0)
@@ -193,17 +242,19 @@ const bars = computed(() =>
 
 function fillFor(person, i, kind) {
   const lifted = person.id === props.pinnedId || i === hoverIndex.value
-  return lifted ? SEG_COLORS[kind].lift : SEG_COLORS[kind].base
+  return lifted ? COLORS[kind].lift : COLORS[kind].base
 }
 
 // ── interaction ─────────────────────────────────────────────────────────────
 function indexFromEvent(e) {
+  const { W, M } = G.value
   const rect = e.currentTarget.getBoundingClientRect()
   const x = ((e.clientX - rect.left) / rect.width) * W
-  if (x < M.left - slotW || x > W - M.right + slotW) return null
-  return Math.max(0, Math.min(99, Math.floor((x - M.left) / slotW)))
+  if (x < M.left - slotW.value || x > W - M.right + slotW.value) return null
+  return Math.max(0, Math.min(99, Math.floor((x - M.left) / slotW.value)))
 }
 function onPointerMove(e) {
+  if (e.pointerType === 'touch') return // fingers pin; the card shows the details
   hoverIndex.value = indexFromEvent(e)
 }
 function onPointerDown(e) {
@@ -211,6 +262,7 @@ function onPointerDown(e) {
   if (i === null) return
   const id = sorted.value[i].id
   emit('update:pinnedId', id === props.pinnedId ? null : id)
+  if (e.pointerType === 'touch') hoverIndex.value = null
 }
 function onKeydown(e) {
   const pinnedIdx = sorted.value.findIndex((p) => p.id === props.pinnedId)
@@ -232,8 +284,10 @@ watch(sorted, (s) => {
   }
 })
 
+// hover wins; otherwise the pinned person only while the chart has keyboard focus
 const activeIndex = computed(() => {
   if (hoverIndex.value !== null) return hoverIndex.value
+  if (!focused.value) return null
   const i = sorted.value.findIndex((p) => p.id === props.pinnedId)
   return i >= 0 ? i : null
 })
@@ -247,8 +301,10 @@ const activeSources = computed(() =>
 
 const tooltipLeft = computed(() => {
   if (activeIndex.value === null) return '0'
-  const pct = ((M.left + (activeIndex.value + 0.5) * slotW) / W) * 100
-  return `${Math.max(13, Math.min(87, pct))}%`
+  const { W, M } = G.value
+  const pct = ((M.left + (activeIndex.value + 0.5) * slotW.value) / W) * 100
+  // keep the 15rem-wide tooltip inside the chart on any screen width
+  return `clamp(7.5rem, ${pct}%, calc(100% - 7.5rem))`
 })
 
 const youMarker = computed(() => {
@@ -256,15 +312,6 @@ const youMarker = computed(() => {
   const v = props.metric === 'income' ? props.you.netMonthlyIncome : props.you.netWealth
   if (v == null || Number.isNaN(v)) return null
   const below = sorted.value.filter((p) => valueOf(p) < v).length
-  return { x: M.left + below * slotW }
+  return { x: G.value.M.left + below * slotW.value }
 })
-
-// ── formatting ──────────────────────────────────────────────────────────────
-const fmtEur = (v) =>
-  (v < 0 ? '−€' : '€') + new Intl.NumberFormat('fr-BE').format(Math.abs(v))
-function fmtCompact(v) {
-  if (Math.abs(v) >= 1e6) return `€${(v / 1e6).toLocaleString('en', { maximumFractionDigits: 1 })} M`
-  if (Math.abs(v) >= 1e3) return `€${(v / 1e3).toLocaleString('en', { maximumFractionDigits: 1 })}k`
-  return `€${v}`
-}
 </script>

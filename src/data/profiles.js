@@ -6,20 +6,23 @@
 // are documented in that script (Statbel salary/fiscal statistics 2024,
 // NBB/ECB Household Finance and Consumption Survey). Values are illustrative
 // interpolations of published aggregates, not real microdata.
+//
+// work.job (and work.former for pensioners) are keys into src/data/jobs.js,
+// which holds the Dutch, French and English titles.
 
 export const profiles = [
   {
     "id": 1,
-    "name": "Sophie",
+    "name": "Wannes",
     "demographics": {
-      "age": 23,
-      "gender": "Female",
-      "region": "Wallonia",
-      "language": "French"
+      "age": 24,
+      "gender": "Male",
+      "region": "Flanders",
+      "language": "Dutch"
     },
     "work": {
       "status": "student",
-      "job": "Student (part-time job)"
+      "job": "student_job"
     },
     "economics": {
       "netMonthlyIncome": 350,
@@ -31,301 +34,70 @@ export const profiles = [
   },
   {
     "id": 2,
-    "name": "Yasmina",
+    "name": "Ayşe",
     "demographics": {
-      "age": 18,
+      "age": 37,
+      "gender": "Female",
+      "region": "Flanders",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "inactive",
+      "job": "homemaker"
+    },
+    "economics": {
+      "netMonthlyIncome": 450,
+      "netWealth": -22000,
+      "incomePercentile": 1.5,
+      "wealthPercentile": 1.5,
+      "homesOwned": 0
+    }
+  },
+  {
+    "id": 3,
+    "name": "Lore",
+    "demographics": {
+      "age": 21,
       "gender": "Female",
       "region": "Flanders",
       "language": "Dutch"
     },
     "work": {
       "status": "student",
-      "job": "Student (part-time job)"
-    },
-    "economics": {
-      "netMonthlyIncome": 450,
-      "netWealth": -4850,
-      "incomePercentile": 1.5,
-      "wealthPercentile": 4.5,
-      "homesOwned": 0
-    }
-  },
-  {
-    "id": 3,
-    "name": "Luc",
-    "demographics": {
-      "age": 25,
-      "gender": "Male",
-      "region": "Flanders",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "unemployed",
-      "job": "Job seeker"
+      "job": "student_job"
     },
     "economics": {
       "netMonthlyIncome": 550,
-      "netWealth": -16500,
-      "incomePercentile": 2.5,
-      "wealthPercentile": 2.5,
-      "homesOwned": 0
-    }
-  },
-  {
-    "id": 4,
-    "name": "Bart",
-    "demographics": {
-      "age": 83,
-      "gender": "Male",
-      "region": "Flanders",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "retired",
-      "job": "Retired — former shop assistant"
-    },
-    "economics": {
-      "netMonthlyIncome": 650,
-      "netWealth": 62500,
-      "incomePercentile": 3.5,
-      "wealthPercentile": 35.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 5,
-    "name": "Jef",
-    "demographics": {
-      "age": 55,
-      "gender": "Male",
-      "region": "Flanders",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "unemployed",
-      "job": "Job seeker"
-    },
-    "economics": {
-      "netMonthlyIncome": 750,
-      "netWealth": 6900,
-      "incomePercentile": 4.5,
-      "wealthPercentile": 18.5,
-      "homesOwned": 0
-    }
-  },
-  {
-    "id": 6,
-    "name": "Pierre",
-    "demographics": {
-      "age": 24,
-      "gender": "Male",
-      "region": "Wallonia",
-      "language": "French"
-    },
-    "work": {
-      "status": "unemployed",
-      "job": "On integration income (leefloon)"
-    },
-    "economics": {
-      "netMonthlyIncome": 840,
       "netWealth": -750,
-      "incomePercentile": 5.5,
+      "incomePercentile": 2.5,
       "wealthPercentile": 7.5,
       "homesOwned": 0
     }
   },
   {
-    "id": 7,
-    "name": "Monique",
+    "id": 4,
+    "name": "Marcel",
     "demographics": {
-      "age": 82,
-      "gender": "Female",
-      "region": "Wallonia",
-      "language": "French"
-    },
-    "work": {
-      "status": "retired",
-      "job": "Retired — former farm worker"
-    },
-    "economics": {
-      "netMonthlyIncome": 920,
-      "netWealth": 9350,
-      "incomePercentile": 6.5,
-      "wealthPercentile": 20.5,
-      "homesOwned": 0
-    }
-  },
-  {
-    "id": 8,
-    "name": "Heidi",
-    "demographics": {
-      "age": 37,
-      "gender": "Female",
-      "region": "Wallonia",
-      "language": "German"
-    },
-    "work": {
-      "status": "unemployed",
-      "job": "Job seeker"
-    },
-    "economics": {
-      "netMonthlyIncome": 1000,
-      "netWealth": -42500,
-      "incomePercentile": 7.5,
-      "wealthPercentile": 0.5,
-      "homesOwned": 0
-    }
-  },
-  {
-    "id": 9,
-    "name": "Olivier",
-    "demographics": {
-      "age": 40,
+      "age": 52,
       "gender": "Male",
       "region": "Wallonia",
       "language": "French"
     },
     "work": {
-      "status": "unemployed",
-      "job": "Job seeker"
+      "status": "inactive",
+      "job": "job_seeker_cohabiting"
     },
     "economics": {
-      "netMonthlyIncome": 1080,
+      "netMonthlyIncome": 650,
       "netWealth": -10500,
-      "incomePercentile": 8.5,
+      "incomePercentile": 3.5,
       "wealthPercentile": 3.5,
       "homesOwned": 0
     }
   },
   {
-    "id": 10,
-    "name": "Lore",
-    "demographics": {
-      "age": 48,
-      "gender": "Female",
-      "region": "Flanders",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "unemployed",
-      "job": "Job seeker"
-    },
-    "economics": {
-      "netMonthlyIncome": 1160,
-      "netWealth": 4650,
-      "incomePercentile": 9.5,
-      "wealthPercentile": 15.5,
-      "homesOwned": 0
-    }
-  },
-  {
-    "id": 11,
-    "name": "Youssef",
-    "demographics": {
-      "age": 75,
-      "gender": "Male",
-      "region": "Flanders",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "retired",
-      "job": "Retired — former seamstress"
-    },
-    "economics": {
-      "netMonthlyIncome": 1210,
-      "netWealth": 23000,
-      "incomePercentile": 10.5,
-      "wealthPercentile": 25.5,
-      "homesOwned": 0
-    }
-  },
-  {
-    "id": 12,
-    "name": "Colette",
-    "demographics": {
-      "age": 38,
-      "gender": "Female",
-      "region": "Wallonia",
-      "language": "French"
-    },
-    "work": {
-      "status": "working",
-      "job": "Part-time cleaner"
-    },
-    "economics": {
-      "netMonthlyIncome": 1240,
-      "netWealth": -22000,
-      "incomePercentile": 11.5,
-      "wealthPercentile": 1.5,
-      "homesOwned": 0
-    }
-  },
-  {
-    "id": 13,
-    "name": "Nicolas",
-    "demographics": {
-      "age": 77,
-      "gender": "Male",
-      "region": "Wallonia",
-      "language": "French"
-    },
-    "work": {
-      "status": "retired",
-      "job": "Retired — former shop assistant"
-    },
-    "economics": {
-      "netMonthlyIncome": 1260,
-      "netWealth": 52500,
-      "incomePercentile": 12.5,
-      "wealthPercentile": 33.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 14,
-    "name": "Mia",
-    "demographics": {
-      "age": 85,
-      "gender": "Female",
-      "region": "Flanders",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "retired",
-      "job": "Retired — former farm worker"
-    },
-    "economics": {
-      "netMonthlyIncome": 1290,
-      "netWealth": 121000,
-      "incomePercentile": 13.5,
-      "wealthPercentile": 45.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 15,
-    "name": "Karim",
-    "demographics": {
-      "age": 79,
-      "gender": "Male",
-      "region": "Wallonia",
-      "language": "French"
-    },
-    "work": {
-      "status": "retired",
-      "job": "Retired — former factory worker"
-    },
-    "economics": {
-      "netMonthlyIncome": 1310,
-      "netWealth": 72500,
-      "incomePercentile": 14.5,
-      "wealthPercentile": 37.5,
-      "homesOwned": 0
-    }
-  },
-  {
-    "id": 16,
-    "name": "Els",
+    "id": 5,
+    "name": "Yasmina",
     "demographics": {
       "age": 30,
       "gender": "Female",
@@ -333,545 +105,382 @@ export const profiles = [
       "language": "Dutch"
     },
     "work": {
-      "status": "unemployed",
-      "job": "Job seeker"
+      "status": "inactive",
+      "job": "homemaker"
     },
     "economics": {
-      "netMonthlyIncome": 1340,
-      "netWealth": 3150,
-      "incomePercentile": 15.5,
-      "wealthPercentile": 13.5,
+      "netMonthlyIncome": 750,
+      "netWealth": -16500,
+      "incomePercentile": 4.5,
+      "wealthPercentile": 2.5,
       "homesOwned": 0
     }
   },
   {
-    "id": 17,
-    "name": "Mohamed",
+    "id": 6,
+    "name": "Femke",
     "demographics": {
-      "age": 72,
-      "gender": "Male",
-      "region": "Brussels",
-      "language": "French"
-    },
-    "work": {
-      "status": "retired",
-      "job": "Retired — former factory worker"
-    },
-    "economics": {
-      "netMonthlyIncome": 1360,
-      "netWealth": 37500,
-      "incomePercentile": 16.5,
-      "wealthPercentile": 30.5,
-      "homesOwned": 0
-    }
-  },
-  {
-    "id": 18,
-    "name": "Noor",
-    "demographics": {
-      "age": 34,
+      "age": 21,
       "gender": "Female",
-      "region": "Flanders",
+      "region": "Brussels",
       "language": "Dutch"
     },
     "work": {
-      "status": "unemployed",
-      "job": "On integration income (leefloon)"
+      "status": "student",
+      "job": "student_job"
     },
     "economics": {
-      "netMonthlyIncome": 1390,
-      "netWealth": 1650,
-      "incomePercentile": 17.5,
-      "wealthPercentile": 11.5,
-      "homesOwned": 0
-    }
-  },
-  {
-    "id": 19,
-    "name": "Wim",
-    "demographics": {
-      "age": 35,
-      "gender": "Male",
-      "region": "Flanders",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "working",
-      "job": "Agency temp worker"
-    },
-    "economics": {
-      "netMonthlyIncome": 1410,
+      "netMonthlyIncome": 840,
       "netWealth": 250,
-      "incomePercentile": 18.5,
+      "incomePercentile": 5.5,
       "wealthPercentile": 9.5,
       "homesOwned": 0
     }
   },
   {
-    "id": 20,
-    "name": "Lars",
+    "id": 7,
+    "name": "Aïcha",
     "demographics": {
-      "age": 22,
-      "gender": "Male",
-      "region": "Flanders",
-      "language": "Dutch"
+      "age": 23,
+      "gender": "Female",
+      "region": "Wallonia",
+      "language": "French"
     },
     "work": {
       "status": "student",
-      "job": "Student"
+      "job": "student_job"
     },
     "economics": {
-      "netMonthlyIncome": 1440,
-      "netWealth": 900,
-      "incomePercentile": 19.5,
-      "wealthPercentile": 10.5,
-      "homesOwned": 0
-    }
-  },
-  {
-    "id": 21,
-    "name": "Ilse",
-    "demographics": {
-      "age": 33,
-      "gender": "Female",
-      "region": "Flanders",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "working",
-      "job": "Part-time kitchen help"
-    },
-    "economics": {
-      "netMonthlyIncome": 1460,
+      "netMonthlyIncome": 920,
       "netWealth": -250,
-      "incomePercentile": 20.5,
+      "incomePercentile": 6.5,
       "wealthPercentile": 8.5,
       "homesOwned": 0
     }
   },
   {
-    "id": 22,
-    "name": "Lotte",
+    "id": 8,
+    "name": "Nora",
     "demographics": {
-      "age": 69,
+      "age": 60,
       "gender": "Female",
       "region": "Flanders",
       "language": "Dutch"
     },
     "work": {
-      "status": "retired",
-      "job": "Retired — former farm worker"
+      "status": "unemployed",
+      "job": "job_seeker"
     },
     "economics": {
-      "netMonthlyIncome": 1490,
-      "netWealth": 20000,
-      "incomePercentile": 21.5,
-      "wealthPercentile": 24.5,
+      "netMonthlyIncome": 1000,
+      "netWealth": 3150,
+      "incomePercentile": 7.5,
+      "wealthPercentile": 13.5,
       "homesOwned": 0
     }
   },
   {
-    "id": 23,
-    "name": "Mohamed",
+    "id": 9,
+    "name": "Julie",
     "demographics": {
-      "age": 61,
-      "gender": "Male",
+      "age": 25,
+      "gender": "Female",
       "region": "Wallonia",
       "language": "French"
     },
     "work": {
-      "status": "working",
-      "job": "Part-time retail worker"
+      "status": "unemployed",
+      "job": "job_seeker"
     },
     "economics": {
-      "netMonthlyIncome": 1510,
-      "netWealth": 33500,
-      "incomePercentile": 22.5,
-      "wealthPercentile": 29.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 24,
-    "name": "Michel",
-    "demographics": {
-      "age": 18,
-      "gender": "Male",
-      "region": "Brussels",
-      "language": "French"
-    },
-    "work": {
-      "status": "working",
-      "job": "Part-time retail worker"
-    },
-    "economics": {
-      "netMonthlyIncome": 1540,
+      "netMonthlyIncome": 1080,
       "netWealth": -1250,
-      "incomePercentile": 23.5,
+      "incomePercentile": 8.5,
       "wealthPercentile": 6.5,
       "homesOwned": 0
     }
   },
   {
-    "id": 25,
-    "name": "Chantal",
+    "id": 10,
+    "name": "Colette",
     "demographics": {
-      "age": 43,
+      "age": 54,
       "gender": "Female",
-      "region": "Wallonia",
-      "language": "French"
-    },
-    "work": {
-      "status": "working",
-      "job": "Agency temp worker"
-    },
-    "economics": {
-      "netMonthlyIncome": 1560,
-      "netWealth": 7650,
-      "incomePercentile": 24.5,
-      "wealthPercentile": 19.5,
-      "homesOwned": 0
-    }
-  },
-  {
-    "id": 26,
-    "name": "Olivier",
-    "demographics": {
-      "age": 74,
-      "gender": "Male",
       "region": "Brussels",
       "language": "French"
     },
     "work": {
-      "status": "retired",
-      "job": "Retired — former nurse"
+      "status": "unemployed",
+      "job": "job_seeker"
     },
     "economics": {
-      "netMonthlyIncome": 1590,
-      "netWealth": 219000,
-      "incomePercentile": 25.5,
-      "wealthPercentile": 60.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 27,
-    "name": "Karim",
-    "demographics": {
-      "age": 19,
-      "gender": "Male",
-      "region": "Wallonia",
-      "language": "French"
-    },
-    "work": {
-      "status": "working",
-      "job": "Part-time retail worker"
-    },
-    "economics": {
-      "netMonthlyIncome": 1610,
-      "netWealth": 2400,
-      "incomePercentile": 26.5,
-      "wealthPercentile": 12.5,
-      "homesOwned": 0
-    }
-  },
-  {
-    "id": 28,
-    "name": "Aïcha",
-    "demographics": {
-      "age": 71,
-      "gender": "Female",
-      "region": "Wallonia",
-      "language": "French"
-    },
-    "work": {
-      "status": "retired",
-      "job": "Retired — former nurse"
-    },
-    "economics": {
-      "netMonthlyIncome": 1640,
-      "netWealth": 186000,
-      "incomePercentile": 27.5,
-      "wealthPercentile": 55.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 29,
-    "name": "Luc",
-    "demographics": {
-      "age": 80,
-      "gender": "Male",
-      "region": "Flanders",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "retired",
-      "job": "Retired — former mechanic"
-    },
-    "economics": {
-      "netMonthlyIncome": 1660,
-      "netWealth": 279000,
-      "incomePercentile": 28.5,
-      "wealthPercentile": 67.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 30,
-    "name": "Ilse",
-    "demographics": {
-      "age": 71,
-      "gender": "Female",
-      "region": "Flanders",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "retired",
-      "job": "Retired — former postal worker"
-    },
-    "economics": {
-      "netMonthlyIncome": 1690,
-      "netWealth": 77500,
-      "incomePercentile": 29.5,
-      "wealthPercentile": 38.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 31,
-    "name": "Seppe",
-    "demographics": {
-      "age": 43,
-      "gender": "Male",
-      "region": "Flanders",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "working",
-      "job": "Hairdresser"
-    },
-    "economics": {
-      "netMonthlyIncome": 1710,
-      "netWealth": 67500,
-      "incomePercentile": 30.5,
-      "wealthPercentile": 36.5,
-      "homesOwned": 0
-    }
-  },
-  {
-    "id": 32,
-    "name": "Pierre",
-    "demographics": {
-      "age": 73,
-      "gender": "Male",
-      "region": "Wallonia",
-      "language": "French"
-    },
-    "work": {
-      "status": "retired",
-      "job": "Retired — former secretary"
-    },
-    "economics": {
-      "netMonthlyIncome": 1740,
-      "netWealth": 173000,
-      "incomePercentile": 31.5,
-      "wealthPercentile": 53.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 33,
-    "name": "Colette",
-    "demographics": {
-      "age": 26,
-      "gender": "Female",
-      "region": "Wallonia",
-      "language": "French"
-    },
-    "work": {
-      "status": "working",
-      "job": "Part-time kitchen help"
-    },
-    "economics": {
-      "netMonthlyIncome": 1760,
-      "netWealth": 6150,
-      "incomePercentile": 32.5,
-      "wealthPercentile": 17.5,
-      "homesOwned": 0
-    }
-  },
-  {
-    "id": 34,
-    "name": "Nicolas",
-    "demographics": {
-      "age": 56,
-      "gender": "Male",
-      "region": "Wallonia",
-      "language": "French"
-    },
-    "work": {
-      "status": "working",
-      "job": "Part-time retail worker"
-    },
-    "economics": {
-      "netMonthlyIncome": 1790,
-      "netWealth": 101000,
-      "incomePercentile": 33.5,
-      "wealthPercentile": 42.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 35,
-    "name": "Louis",
-    "demographics": {
-      "age": 62,
-      "gender": "Male",
-      "region": "Wallonia",
-      "language": "French"
-    },
-    "work": {
-      "status": "retired",
-      "job": "Retired — former secretary"
-    },
-    "economics": {
-      "netMonthlyIncome": 1810,
-      "netWealth": 108000,
-      "incomePercentile": 34.5,
-      "wealthPercentile": 43.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 36,
-    "name": "Lien",
-    "demographics": {
-      "age": 69,
-      "gender": "Female",
-      "region": "Flanders",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "retired",
-      "job": "Retired — former nurse"
-    },
-    "economics": {
-      "netMonthlyIncome": 1840,
-      "netWealth": 228000,
-      "incomePercentile": 35.5,
-      "wealthPercentile": 61.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 37,
-    "name": "Yasmina",
-    "demographics": {
-      "age": 86,
-      "gender": "Female",
-      "region": "Flanders",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "retired",
-      "job": "Retired — former nurse"
-    },
-    "economics": {
-      "netMonthlyIncome": 1860,
-      "netWealth": 166000,
-      "incomePercentile": 36.5,
-      "wealthPercentile": 52.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 38,
-    "name": "Salvatore",
-    "demographics": {
-      "age": 76,
-      "gender": "Male",
-      "region": "Wallonia",
-      "language": "French"
-    },
-    "work": {
-      "status": "retired",
-      "job": "Retired — former postal worker"
-    },
-    "economics": {
-      "netMonthlyIncome": 1890,
-      "netWealth": 199000,
-      "incomePercentile": 37.5,
-      "wealthPercentile": 57.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 39,
-    "name": "Mia",
-    "demographics": {
-      "age": 77,
-      "gender": "Female",
-      "region": "Flanders",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "retired",
-      "job": "Retired — former secretary"
-    },
-    "economics": {
-      "netMonthlyIncome": 1910,
-      "netWealth": 134000,
-      "incomePercentile": 38.5,
-      "wealthPercentile": 47.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 40,
-    "name": "Katrien",
-    "demographics": {
-      "age": 57,
-      "gender": "Female",
-      "region": "Flanders",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "working",
-      "job": "Care assistant"
-    },
-    "economics": {
-      "netMonthlyIncome": 1940,
-      "netWealth": 114000,
-      "incomePercentile": 39.5,
-      "wealthPercentile": 44.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 41,
-    "name": "Greet",
-    "demographics": {
-      "age": 19,
-      "gender": "Female",
-      "region": "Flanders",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "working",
-      "job": "Supermarket cashier"
-    },
-    "economics": {
-      "netMonthlyIncome": 1970,
+      "netMonthlyIncome": 1160,
       "netWealth": 3900,
-      "incomePercentile": 40.5,
+      "incomePercentile": 9.5,
       "wealthPercentile": 14.5,
       "homesOwned": 0
     }
   },
   {
-    "id": 42,
-    "name": "Louis",
+    "id": 11,
+    "name": "Heidi",
+    "demographics": {
+      "age": 56,
+      "gender": "Female",
+      "region": "Wallonia",
+      "language": "German"
+    },
+    "work": {
+      "status": "unemployed",
+      "job": "job_seeker"
+    },
+    "economics": {
+      "netMonthlyIncome": 1210,
+      "netWealth": 1650,
+      "incomePercentile": 10.5,
+      "wealthPercentile": 11.5,
+      "homesOwned": 0
+    }
+  },
+  {
+    "id": 12,
+    "name": "Emir",
+    "demographics": {
+      "age": 35,
+      "gender": "Male",
+      "region": "Brussels",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "unemployed",
+      "job": "job_seeker"
+    },
+    "economics": {
+      "netMonthlyIncome": 1240,
+      "netWealth": -42500,
+      "incomePercentile": 11.5,
+      "wealthPercentile": 0.5,
+      "homesOwned": 0
+    }
+  },
+  {
+    "id": 13,
+    "name": "Milan",
+    "demographics": {
+      "age": 42,
+      "gender": "Male",
+      "region": "Flanders",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "working",
+      "job": "part_time_cleaner"
+    },
+    "economics": {
+      "netMonthlyIncome": 1260,
+      "netWealth": 2400,
+      "incomePercentile": 12.5,
+      "wealthPercentile": 12.5,
+      "homesOwned": 0
+    }
+  },
+  {
+    "id": 14,
+    "name": "Chloé",
+    "demographics": {
+      "age": 49,
+      "gender": "Female",
+      "region": "Wallonia",
+      "language": "French"
+    },
+    "work": {
+      "status": "unemployed",
+      "job": "job_seeker"
+    },
+    "economics": {
+      "netMonthlyIncome": 1290,
+      "netWealth": 7650,
+      "incomePercentile": 13.5,
+      "wealthPercentile": 19.5,
+      "homesOwned": 0
+    }
+  },
+  {
+    "id": 15,
+    "name": "Nadia",
+    "demographics": {
+      "age": 20,
+      "gender": "Female",
+      "region": "Wallonia",
+      "language": "French"
+    },
+    "work": {
+      "status": "student",
+      "job": "student_job"
+    },
+    "economics": {
+      "netMonthlyIncome": 1310,
+      "netWealth": -4850,
+      "incomePercentile": 14.5,
+      "wealthPercentile": 4.5,
+      "homesOwned": 0
+    }
+  },
+  {
+    "id": 16,
+    "name": "Louise",
+    "demographics": {
+      "age": 66,
+      "gender": "Female",
+      "region": "Wallonia",
+      "language": "French"
+    },
+    "work": {
+      "status": "retired",
+      "job": "retired",
+      "former": "factory_worker"
+    },
+    "economics": {
+      "netMonthlyIncome": 1340,
+      "netWealth": 134000,
+      "incomePercentile": 15.5,
+      "wealthPercentile": 47.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 17,
+    "name": "Sophie",
+    "demographics": {
+      "age": 70,
+      "gender": "Female",
+      "region": "Brussels",
+      "language": "French"
+    },
+    "work": {
+      "status": "retired",
+      "job": "retired",
+      "former": "factory_worker"
+    },
+    "economics": {
+      "netMonthlyIncome": 1360,
+      "netWealth": 95000,
+      "incomePercentile": 16.5,
+      "wealthPercentile": 41.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 18,
+    "name": "Jan",
+    "demographics": {
+      "age": 73,
+      "gender": "Male",
+      "region": "Flanders",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "retired",
+      "job": "retired",
+      "former": "shop_assistant"
+    },
+    "economics": {
+      "netMonthlyIncome": 1390,
+      "netWealth": 33500,
+      "incomePercentile": 17.5,
+      "wealthPercentile": 29.5,
+      "homesOwned": 0
+    }
+  },
+  {
+    "id": 19,
+    "name": "Marc",
+    "demographics": {
+      "age": 79,
+      "gender": "Male",
+      "region": "Flanders",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "retired",
+      "job": "retired",
+      "former": "textile_worker"
+    },
+    "economics": {
+      "netMonthlyIncome": 1410,
+      "netWealth": 108000,
+      "incomePercentile": 18.5,
+      "wealthPercentile": 43.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 20,
+    "name": "Chantal",
+    "demographics": {
+      "age": 62,
+      "gender": "Female",
+      "region": "Wallonia",
+      "language": "French"
+    },
+    "work": {
+      "status": "working",
+      "job": "part_time_kitchen"
+    },
+    "economics": {
+      "netMonthlyIncome": 1440,
+      "netWealth": 23000,
+      "incomePercentile": 19.5,
+      "wealthPercentile": 25.5,
+      "homesOwned": 0
+    }
+  },
+  {
+    "id": 21,
+    "name": "Frank",
+    "demographics": {
+      "age": 60,
+      "gender": "Male",
+      "region": "Flanders",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "retired",
+      "job": "retired",
+      "former": "factory_worker"
+    },
+    "economics": {
+      "netMonthlyIncome": 1460,
+      "netWealth": 47500,
+      "incomePercentile": 20.5,
+      "wealthPercentile": 32.5,
+      "homesOwned": 0
+    }
+  },
+  {
+    "id": 22,
+    "name": "Nathalie",
+    "demographics": {
+      "age": 45,
+      "gender": "Female",
+      "region": "Wallonia",
+      "language": "French"
+    },
+    "work": {
+      "status": "working",
+      "job": "part_time_retail"
+    },
+    "economics": {
+      "netMonthlyIncome": 1490,
+      "netWealth": 5400,
+      "incomePercentile": 21.5,
+      "wealthPercentile": 16.5,
+      "homesOwned": 0
+    }
+  },
+  {
+    "id": 23,
+    "name": "Marco",
     "demographics": {
       "age": 59,
       "gender": "Male",
@@ -880,154 +489,560 @@ export const profiles = [
     },
     "work": {
       "status": "working",
-      "job": "Warehouse worker"
+      "job": "part_time_kitchen"
     },
     "economics": {
-      "netMonthlyIncome": 2000,
-      "netWealth": 88500,
-      "incomePercentile": 41.5,
-      "wealthPercentile": 40.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 43,
-    "name": "Julien",
-    "demographics": {
-      "age": 54,
-      "gender": "Male",
-      "region": "Wallonia",
-      "language": "French"
-    },
-    "work": {
-      "status": "working",
-      "job": "Supermarket cashier"
-    },
-    "economics": {
-      "netMonthlyIncome": 2030,
-      "netWealth": 57500,
-      "incomePercentile": 42.5,
-      "wealthPercentile": 34.5,
+      "netMonthlyIncome": 1510,
+      "netWealth": 28500,
+      "incomePercentile": 22.5,
+      "wealthPercentile": 27.5,
       "homesOwned": 0
     }
   },
   {
-    "id": 44,
-    "name": "Manon",
+    "id": 24,
+    "name": "Rudi",
     "demographics": {
-      "age": 62,
-      "gender": "Female",
-      "region": "Wallonia",
-      "language": "French"
+      "age": 85,
+      "gender": "Male",
+      "region": "Flanders",
+      "language": "Dutch"
     },
     "work": {
-      "status": "working",
-      "job": "Care assistant"
+      "status": "retired",
+      "job": "retired",
+      "former": "nurse"
     },
     "economics": {
-      "netMonthlyIncome": 2060,
-      "netWealth": 287000,
-      "incomePercentile": 43.5,
-      "wealthPercentile": 68.5,
+      "netMonthlyIncome": 1540,
+      "netWealth": 147000,
+      "incomePercentile": 23.5,
+      "wealthPercentile": 49.5,
       "homesOwned": 1
     }
   },
   {
-    "id": 45,
-    "name": "Michel",
+    "id": 25,
+    "name": "Els",
     "demographics": {
-      "age": 34,
-      "gender": "Male",
-      "region": "Wallonia",
-      "language": "French"
+      "age": 51,
+      "gender": "Female",
+      "region": "Flanders",
+      "language": "Dutch"
     },
     "work": {
       "status": "working",
-      "job": "Warehouse worker"
+      "job": "hairdresser"
     },
     "economics": {
-      "netMonthlyIncome": 2090,
+      "netMonthlyIncome": 1560,
+      "netWealth": 4650,
+      "incomePercentile": 24.5,
+      "wealthPercentile": 15.5,
+      "homesOwned": 0
+    }
+  },
+  {
+    "id": 26,
+    "name": "Amber",
+    "demographics": {
+      "age": 71,
+      "gender": "Female",
+      "region": "Flanders",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "retired",
+      "job": "retired",
+      "former": "nurse"
+    },
+    "economics": {
+      "netMonthlyIncome": 1590,
+      "netWealth": 199000,
+      "incomePercentile": 25.5,
+      "wealthPercentile": 57.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 27,
+    "name": "Tuur",
+    "demographics": {
+      "age": 70,
+      "gender": "Male",
+      "region": "Flanders",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "retired",
+      "job": "retired",
+      "former": "secretary"
+    },
+    "economics": {
+      "netMonthlyIncome": 1610,
+      "netWealth": 72500,
+      "incomePercentile": 26.5,
+      "wealthPercentile": 37.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 28,
+    "name": "Griet",
+    "demographics": {
+      "age": 33,
+      "gender": "Female",
+      "region": "Flanders",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "working",
+      "job": "temp_worker"
+    },
+    "economics": {
+      "netMonthlyIncome": 1640,
       "netWealth": 12000,
-      "incomePercentile": 44.5,
+      "incomePercentile": 27.5,
       "wealthPercentile": 21.5,
       "homesOwned": 0
     }
   },
   {
-    "id": 46,
-    "name": "Louis",
+    "id": 29,
+    "name": "Koen",
     "demographics": {
-      "age": 19,
+      "age": 65,
+      "gender": "Male",
+      "region": "Flanders",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "retired",
+      "job": "retired",
+      "former": "mechanic"
+    },
+    "economics": {
+      "netMonthlyIncome": 1660,
+      "netWealth": 205000,
+      "incomePercentile": 28.5,
+      "wealthPercentile": 58.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 30,
+    "name": "Benoît",
+    "demographics": {
+      "age": 35,
       "gender": "Male",
       "region": "Wallonia",
       "language": "French"
     },
     "work": {
       "status": "working",
-      "job": "Warehouse worker"
+      "job": "part_time_kitchen"
     },
     "economics": {
-      "netMonthlyIncome": 2120,
-      "netWealth": 25500,
-      "incomePercentile": 45.5,
-      "wealthPercentile": 26.5,
+      "netMonthlyIncome": 1690,
+      "netWealth": 900,
+      "incomePercentile": 29.5,
+      "wealthPercentile": 10.5,
       "homesOwned": 0
     }
   },
   {
-    "id": 47,
-    "name": "Colette",
+    "id": 31,
+    "name": "Jef",
     "demographics": {
-      "age": 50,
-      "gender": "Female",
-      "region": "Brussels",
-      "language": "French"
-    },
-    "work": {
-      "status": "working",
-      "job": "Care assistant"
-    },
-    "economics": {
-      "netMonthlyIncome": 2150,
-      "netWealth": 127000,
-      "incomePercentile": 46.5,
-      "wealthPercentile": 46.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 48,
-    "name": "Mia",
-    "demographics": {
-      "age": 30,
-      "gender": "Female",
+      "age": 63,
+      "gender": "Male",
       "region": "Flanders",
       "language": "Dutch"
     },
     "work": {
       "status": "working",
-      "job": "Supermarket cashier"
+      "job": "temp_worker"
     },
     "economics": {
-      "netMonthlyIncome": 2180,
+      "netMonthlyIncome": 1710,
       "netWealth": 42500,
-      "incomePercentile": 47.5,
+      "incomePercentile": 30.5,
       "wealthPercentile": 31.5,
       "homesOwned": 0
     }
   },
   {
-    "id": 49,
-    "name": "Yasmina",
+    "id": 32,
+    "name": "Jean",
     "demographics": {
-      "age": 43,
+      "age": 55,
+      "gender": "Male",
+      "region": "Wallonia",
+      "language": "French"
+    },
+    "work": {
+      "status": "working",
+      "job": "part_time_retail"
+    },
+    "economics": {
+      "netMonthlyIncome": 1740,
+      "netWealth": 114000,
+      "incomePercentile": 31.5,
+      "wealthPercentile": 44.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 33,
+    "name": "Anke",
+    "demographics": {
+      "age": 49,
       "gender": "Female",
       "region": "Flanders",
       "language": "Dutch"
     },
     "work": {
       "status": "working",
-      "job": "Administrative assistant"
+      "job": "hairdresser"
+    },
+    "economics": {
+      "netMonthlyIncome": 1760,
+      "netWealth": 57500,
+      "incomePercentile": 32.5,
+      "wealthPercentile": 34.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 34,
+    "name": "Nathan",
+    "demographics": {
+      "age": 41,
+      "gender": "Male",
+      "region": "Brussels",
+      "language": "French"
+    },
+    "work": {
+      "status": "working",
+      "job": "part_time_retail"
+    },
+    "economics": {
+      "netMonthlyIncome": 1790,
+      "netWealth": 20000,
+      "incomePercentile": 33.5,
+      "wealthPercentile": 24.5,
+      "homesOwned": 0
+    }
+  },
+  {
+    "id": 35,
+    "name": "Salvatore",
+    "demographics": {
+      "age": 40,
+      "gender": "Male",
+      "region": "Wallonia",
+      "language": "French"
+    },
+    "work": {
+      "status": "working",
+      "job": "warehouse_worker"
+    },
+    "economics": {
+      "netMonthlyIncome": 1810,
+      "netWealth": 67500,
+      "incomePercentile": 34.5,
+      "wealthPercentile": 36.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 36,
+    "name": "Mia",
+    "demographics": {
+      "age": 40,
+      "gender": "Female",
+      "region": "Flanders",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "working",
+      "job": "care_assistant"
+    },
+    "economics": {
+      "netMonthlyIncome": 1840,
+      "netWealth": 6150,
+      "incomePercentile": 35.5,
+      "wealthPercentile": 17.5,
+      "homesOwned": 0
+    }
+  },
+  {
+    "id": 37,
+    "name": "Elke",
+    "demographics": {
+      "age": 54,
+      "gender": "Female",
+      "region": "Flanders",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "working",
+      "job": "warehouse_worker"
+    },
+    "economics": {
+      "netMonthlyIncome": 1860,
+      "netWealth": 192000,
+      "incomePercentile": 36.5,
+      "wealthPercentile": 56.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 38,
+    "name": "Fatma",
+    "demographics": {
+      "age": 78,
+      "gender": "Female",
+      "region": "Flanders",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "retired",
+      "job": "retired",
+      "former": "secretary"
+    },
+    "economics": {
+      "netMonthlyIncome": 1890,
+      "netWealth": 186000,
+      "incomePercentile": 37.5,
+      "wealthPercentile": 55.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 39,
+    "name": "Wim",
+    "demographics": {
+      "age": 50,
+      "gender": "Male",
+      "region": "Flanders",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "working",
+      "job": "delivery_driver"
+    },
+    "economics": {
+      "netMonthlyIncome": 1910,
+      "netWealth": 140000,
+      "incomePercentile": 38.5,
+      "wealthPercentile": 48.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 40,
+    "name": "Geert",
+    "demographics": {
+      "age": 32,
+      "gender": "Male",
+      "region": "Flanders",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "working",
+      "job": "care_assistant"
+    },
+    "economics": {
+      "netMonthlyIncome": 1940,
+      "netWealth": 31000,
+      "incomePercentile": 39.5,
+      "wealthPercentile": 28.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 41,
+    "name": "Vincent",
+    "demographics": {
+      "age": 62,
+      "gender": "Male",
+      "region": "Wallonia",
+      "language": "French"
+    },
+    "work": {
+      "status": "working",
+      "job": "cashier"
+    },
+    "economics": {
+      "netMonthlyIncome": 1970,
+      "netWealth": 127000,
+      "incomePercentile": 40.5,
+      "wealthPercentile": 46.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 42,
+    "name": "Dirk",
+    "demographics": {
+      "age": 43,
+      "gender": "Male",
+      "region": "Flanders",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "working",
+      "job": "care_assistant"
+    },
+    "economics": {
+      "netMonthlyIncome": 2000,
+      "netWealth": 15000,
+      "incomePercentile": 41.5,
+      "wealthPercentile": 22.5,
+      "homesOwned": 0
+    }
+  },
+  {
+    "id": 43,
+    "name": "Zoé",
+    "demographics": {
+      "age": 64,
+      "gender": "Female",
+      "region": "Wallonia",
+      "language": "French"
+    },
+    "work": {
+      "status": "working",
+      "job": "care_assistant"
+    },
+    "economics": {
+      "netMonthlyIncome": 2030,
+      "netWealth": 228000,
+      "incomePercentile": 42.5,
+      "wealthPercentile": 61.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 44,
+    "name": "Inge",
+    "demographics": {
+      "age": 36,
+      "gender": "Female",
+      "region": "Flanders",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "working",
+      "job": "care_assistant"
+    },
+    "economics": {
+      "netMonthlyIncome": 2060,
+      "netWealth": 6900,
+      "incomePercentile": 43.5,
+      "wealthPercentile": 18.5,
+      "homesOwned": 0
+    }
+  },
+  {
+    "id": 45,
+    "name": "Émilie",
+    "demographics": {
+      "age": 22,
+      "gender": "Female",
+      "region": "Wallonia",
+      "language": "French"
+    },
+    "work": {
+      "status": "working",
+      "job": "warehouse_worker"
+    },
+    "economics": {
+      "netMonthlyIncome": 2090,
+      "netWealth": 9350,
+      "incomePercentile": 44.5,
+      "wealthPercentile": 20.5,
+      "homesOwned": 0
+    }
+  },
+  {
+    "id": 46,
+    "name": "Lieze",
+    "demographics": {
+      "age": 73,
+      "gender": "Female",
+      "region": "Flanders",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "retired",
+      "job": "retired",
+      "former": "train_driver"
+    },
+    "economics": {
+      "netMonthlyIncome": 2120,
+      "netWealth": 296000,
+      "incomePercentile": 45.5,
+      "wealthPercentile": 69.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 47,
+    "name": "Sander",
+    "demographics": {
+      "age": 88,
+      "gender": "Male",
+      "region": "Flanders",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "retired",
+      "job": "retired",
+      "former": "train_driver"
+    },
+    "economics": {
+      "netMonthlyIncome": 2150,
+      "netWealth": 262000,
+      "incomePercentile": 46.5,
+      "wealthPercentile": 65.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 48,
+    "name": "Monique",
+    "demographics": {
+      "age": 48,
+      "gender": "Female",
+      "region": "Wallonia",
+      "language": "French"
+    },
+    "work": {
+      "status": "working",
+      "job": "care_assistant"
+    },
+    "economics": {
+      "netMonthlyIncome": 2180,
+      "netWealth": 121000,
+      "incomePercentile": 47.5,
+      "wealthPercentile": 45.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 49,
+    "name": "Hans",
+    "demographics": {
+      "age": 43,
+      "gender": "Male",
+      "region": "Flanders",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "working",
+      "job": "postal_worker"
     },
     "economics": {
       "netMonthlyIncome": 2210,
@@ -1039,49 +1054,91 @@ export const profiles = [
   },
   {
     "id": 50,
-    "name": "Ayşe",
+    "name": "Nicolas",
     "demographics": {
-      "age": 59,
-      "gender": "Female",
-      "region": "Flanders",
-      "language": "Dutch"
+      "age": 23,
+      "gender": "Male",
+      "region": "Wallonia",
+      "language": "French"
     },
     "work": {
       "status": "working",
-      "job": "Bus driver"
+      "job": "truck_driver"
     },
     "economics": {
       "netMonthlyIncome": 2240,
-      "netWealth": 212000,
+      "netWealth": 77500,
       "incomePercentile": 49.5,
-      "wealthPercentile": 59.5,
-      "homesOwned": 1
+      "wealthPercentile": 38.5,
+      "homesOwned": 0
     }
   },
   {
     "id": 51,
-    "name": "Lars",
+    "name": "Olivier",
     "demographics": {
-      "age": 41,
+      "age": 42,
+      "gender": "Male",
+      "region": "Wallonia",
+      "language": "French"
+    },
+    "work": {
+      "status": "working",
+      "job": "bus_driver"
+    },
+    "economics": {
+      "netMonthlyIncome": 2270,
+      "netWealth": 52500,
+      "incomePercentile": 50.5,
+      "wealthPercentile": 33.5,
+      "homesOwned": 0
+    }
+  },
+  {
+    "id": 52,
+    "name": "Cédric",
+    "demographics": {
+      "age": 24,
+      "gender": "Male",
+      "region": "Wallonia",
+      "language": "French"
+    },
+    "work": {
+      "status": "working",
+      "job": "postal_worker"
+    },
+    "economics": {
+      "netMonthlyIncome": 2300,
+      "netWealth": 37500,
+      "incomePercentile": 51.5,
+      "wealthPercentile": 30.5,
+      "homesOwned": 0
+    }
+  },
+  {
+    "id": 53,
+    "name": "Bram",
+    "demographics": {
+      "age": 22,
       "gender": "Male",
       "region": "Flanders",
       "language": "Dutch"
     },
     "work": {
       "status": "working",
-      "job": "Childcare worker"
+      "job": "postal_worker"
     },
     "economics": {
-      "netMonthlyIncome": 2270,
-      "netWealth": 245000,
-      "incomePercentile": 50.5,
-      "wealthPercentile": 63.5,
-      "homesOwned": 1
+      "netMonthlyIncome": 2330,
+      "netWealth": 62500,
+      "incomePercentile": 52.5,
+      "wealthPercentile": 35.5,
+      "homesOwned": 0
     }
   },
   {
-    "id": 52,
-    "name": "Mia",
+    "id": 54,
+    "name": "Christel",
     "demographics": {
       "age": 24,
       "gender": "Female",
@@ -1090,280 +1147,241 @@ export const profiles = [
     },
     "work": {
       "status": "working",
-      "job": "Bus driver"
-    },
-    "economics": {
-      "netMonthlyIncome": 2300,
-      "netWealth": 28500,
-      "incomePercentile": 51.5,
-      "wealthPercentile": 27.5,
-      "homesOwned": 0
-    }
-  },
-  {
-    "id": 53,
-    "name": "Marcel",
-    "demographics": {
-      "age": 58,
-      "gender": "Male",
-      "region": "Wallonia",
-      "language": "French"
-    },
-    "work": {
-      "status": "working",
-      "job": "Bus driver"
-    },
-    "economics": {
-      "netMonthlyIncome": 2330,
-      "netWealth": 147000,
-      "incomePercentile": 52.5,
-      "wealthPercentile": 49.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 54,
-    "name": "Jef",
-    "demographics": {
-      "age": 54,
-      "gender": "Male",
-      "region": "Brussels",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "working",
-      "job": "Truck driver"
+      "job": "postal_worker"
     },
     "economics": {
       "netMonthlyIncome": 2360,
-      "netWealth": 253000,
+      "netWealth": 101000,
       "incomePercentile": 53.5,
-      "wealthPercentile": 64.5,
+      "wealthPercentile": 42.5,
       "homesOwned": 1
     }
   },
   {
     "id": 55,
-    "name": "Robbe",
+    "name": "Antoine",
     "demographics": {
-      "age": 36,
+      "age": 79,
       "gender": "Male",
-      "region": "Flanders",
-      "language": "Dutch"
+      "region": "Brussels",
+      "language": "French"
     },
     "work": {
-      "status": "working",
-      "job": "Childcare worker"
+      "status": "retired",
+      "job": "retired",
+      "former": "train_driver"
     },
     "economics": {
       "netMonthlyIncome": 2390,
-      "netWealth": 31000,
+      "netWealth": 366000,
       "incomePercentile": 54.5,
-      "wealthPercentile": 28.5,
+      "wealthPercentile": 75.5,
       "homesOwned": 1
     }
   },
   {
     "id": 56,
-    "name": "Jan",
+    "name": "Léa",
     "demographics": {
-      "age": 23,
-      "gender": "Male",
-      "region": "Flanders",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "working",
-      "job": "Bus driver"
-    },
-    "economics": {
-      "netMonthlyIncome": 2420,
-      "netWealth": 5400,
-      "incomePercentile": 55.5,
-      "wealthPercentile": 16.5,
-      "homesOwned": 0
-    }
-  },
-  {
-    "id": 57,
-    "name": "Julien",
-    "demographics": {
-      "age": 30,
-      "gender": "Male",
+      "age": 53,
+      "gender": "Female",
       "region": "Brussels",
       "language": "French"
     },
     "work": {
       "status": "working",
-      "job": "Childcare worker"
+      "job": "truck_driver"
     },
     "economics": {
-      "netMonthlyIncome": 2450,
-      "netWealth": 179000,
-      "incomePercentile": 56.5,
-      "wealthPercentile": 54.5,
+      "netMonthlyIncome": 2420,
+      "netWealth": 173000,
+      "incomePercentile": 55.5,
+      "wealthPercentile": 53.5,
       "homesOwned": 1
     }
   },
   {
-    "id": 58,
-    "name": "Luc",
+    "id": 57,
+    "name": "Rita",
     "demographics": {
-      "age": 20,
-      "gender": "Male",
-      "region": "Flanders",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "working",
-      "job": "Postal worker"
-    },
-    "economics": {
-      "netMonthlyIncome": 2480,
-      "netWealth": 15000,
-      "incomePercentile": 57.5,
-      "wealthPercentile": 22.5,
-      "homesOwned": 0
-    }
-  },
-  {
-    "id": 59,
-    "name": "Mia",
-    "demographics": {
-      "age": 23,
+      "age": 29,
       "gender": "Female",
       "region": "Flanders",
       "language": "Dutch"
     },
     "work": {
       "status": "working",
-      "job": "Truck driver"
+      "job": "truck_driver"
     },
     "economics": {
-      "netMonthlyIncome": 2510,
+      "netMonthlyIncome": 2450,
       "netWealth": 17500,
-      "incomePercentile": 58.5,
+      "incomePercentile": 56.5,
       "wealthPercentile": 23.5,
       "homesOwned": 0
     }
   },
   {
-    "id": 60,
-    "name": "Ilse",
+    "id": 58,
+    "name": "Ria",
     "demographics": {
-      "age": 57,
+      "age": 29,
       "gender": "Female",
       "region": "Flanders",
       "language": "Dutch"
     },
     "work": {
       "status": "working",
-      "job": "Bus driver"
+      "job": "admin_assistant"
     },
     "economics": {
-      "netMonthlyIncome": 2540,
-      "netWealth": 270000,
-      "incomePercentile": 59.5,
-      "wealthPercentile": 66.5,
-      "homesOwned": 1
+      "netMonthlyIncome": 2480,
+      "netWealth": 25500,
+      "incomePercentile": 57.5,
+      "wealthPercentile": 26.5,
+      "homesOwned": 0
     }
   },
   {
-    "id": 61,
-    "name": "Katrien",
+    "id": 59,
+    "name": "Josiane",
     "demographics": {
-      "age": 64,
-      "gender": "Female",
-      "region": "Brussels",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "retired",
-      "job": "Retired — former civil servant"
-    },
-    "economics": {
-      "netMonthlyIncome": 2570,
-      "netWealth": 330000,
-      "incomePercentile": 60.5,
-      "wealthPercentile": 72.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 62,
-    "name": "Koen",
-    "demographics": {
-      "age": 28,
-      "gender": "Male",
-      "region": "Flanders",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "working",
-      "job": "Truck driver"
-    },
-    "economics": {
-      "netMonthlyIncome": 2600,
-      "netWealth": 82500,
-      "incomePercentile": 61.5,
-      "wealthPercentile": 39.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 63,
-    "name": "Julie",
-    "demographics": {
-      "age": 28,
+      "age": 72,
       "gender": "Female",
       "region": "Wallonia",
       "language": "French"
     },
     "work": {
-      "status": "working",
-      "job": "Train conductor"
+      "status": "retired",
+      "job": "retired",
+      "former": "bank_clerk"
     },
     "economics": {
-      "netMonthlyIncome": 2640,
-      "netWealth": 47500,
-      "incomePercentile": 62.5,
-      "wealthPercentile": 32.5,
-      "homesOwned": 0
+      "netMonthlyIncome": 2510,
+      "netWealth": 279000,
+      "incomePercentile": 58.5,
+      "wealthPercentile": 67.5,
+      "homesOwned": 1
     }
   },
   {
-    "id": 64,
-    "name": "An",
+    "id": 60,
+    "name": "Leen",
     "demographics": {
-      "age": 82,
+      "age": 37,
+      "gender": "Female",
+      "region": "Flanders",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "working",
+      "job": "truck_driver"
+    },
+    "economics": {
+      "netMonthlyIncome": 2540,
+      "netWealth": 179000,
+      "incomePercentile": 59.5,
+      "wealthPercentile": 54.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 61,
+    "name": "Godelieve",
+    "demographics": {
+      "age": 69,
       "gender": "Female",
       "region": "Flanders",
       "language": "Dutch"
     },
     "work": {
       "status": "retired",
-      "job": "Retired — former railway engineer"
+      "job": "retired",
+      "former": "teacher"
+    },
+    "economics": {
+      "netMonthlyIncome": 2570,
+      "netWealth": 270000,
+      "incomePercentile": 60.5,
+      "wealthPercentile": 66.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 62,
+    "name": "Michel",
+    "demographics": {
+      "age": 46,
+      "gender": "Male",
+      "region": "Wallonia",
+      "language": "French"
+    },
+    "work": {
+      "status": "working",
+      "job": "truck_driver"
+    },
+    "economics": {
+      "netMonthlyIncome": 2600,
+      "netWealth": 166000,
+      "incomePercentile": 61.5,
+      "wealthPercentile": 52.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 63,
+    "name": "Yannick",
+    "demographics": {
+      "age": 51,
+      "gender": "Male",
+      "region": "Wallonia",
+      "language": "French"
+    },
+    "work": {
+      "status": "working",
+      "job": "primary_teacher"
+    },
+    "economics": {
+      "netMonthlyIncome": 2640,
+      "netWealth": 287000,
+      "incomePercentile": 62.5,
+      "wealthPercentile": 68.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 64,
+    "name": "Robbe",
+    "demographics": {
+      "age": 30,
+      "gender": "Male",
+      "region": "Brussels",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "working",
+      "job": "nurse"
     },
     "economics": {
       "netMonthlyIncome": 2670,
-      "netWealth": 378000,
+      "netWealth": 88500,
       "incomePercentile": 63.5,
-      "wealthPercentile": 76.5,
+      "wealthPercentile": 40.5,
       "homesOwned": 1
     }
   },
   {
     "id": 65,
-    "name": "Lien",
+    "name": "Evi",
     "demographics": {
-      "age": 40,
+      "age": 39,
       "gender": "Female",
       "region": "Flanders",
       "language": "Dutch"
     },
     "work": {
       "status": "working",
-      "job": "Primary-school teacher"
+      "job": "nurse"
     },
     "economics": {
       "netMonthlyIncome": 2710,
@@ -1375,133 +1393,436 @@ export const profiles = [
   },
   {
     "id": 66,
-    "name": "Wim",
+    "name": "Christophe",
     "demographics": {
-      "age": 20,
+      "age": 75,
+      "gender": "Male",
+      "region": "Wallonia",
+      "language": "French"
+    },
+    "work": {
+      "status": "retired",
+      "job": "retired",
+      "former": "teacher"
+    },
+    "economics": {
+      "netMonthlyIncome": 2740,
+      "netWealth": 432000,
+      "incomePercentile": 65.5,
+      "wealthPercentile": 80.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 67,
+    "name": "Steven",
+    "demographics": {
+      "age": 30,
       "gender": "Male",
       "region": "Flanders",
       "language": "Dutch"
     },
     "work": {
       "status": "working",
-      "job": "Police officer"
+      "job": "train_conductor"
     },
     "economics": {
-      "netMonthlyIncome": 2740,
-      "netWealth": 192000,
-      "incomePercentile": 65.5,
-      "wealthPercentile": 56.5,
-      "homesOwned": 1
+      "netMonthlyIncome": 2780,
+      "netWealth": 82500,
+      "incomePercentile": 66.5,
+      "wealthPercentile": 39.5,
+      "homesOwned": 0
     }
   },
   {
-    "id": 67,
+    "id": 68,
     "name": "Noor",
     "demographics": {
-      "age": 62,
+      "age": 52,
       "gender": "Female",
       "region": "Flanders",
       "language": "Dutch"
     },
     "work": {
       "status": "working",
-      "job": "Electrician"
-    },
-    "economics": {
-      "netMonthlyIncome": 2780,
-      "netWealth": 616000,
-      "incomePercentile": 66.5,
-      "wealthPercentile": 88.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 68,
-    "name": "Wim",
-    "demographics": {
-      "age": 24,
-      "gender": "Male",
-      "region": "Flanders",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "working",
-      "job": "Nurse"
+      "job": "police_officer"
     },
     "economics": {
       "netMonthlyIncome": 2810,
-      "netWealth": 205000,
+      "netWealth": 219000,
       "incomePercentile": 67.5,
-      "wealthPercentile": 58.5,
+      "wealthPercentile": 60.5,
       "homesOwned": 1
     }
   },
   {
     "id": 69,
-    "name": "Koen",
+    "name": "Jana",
     "demographics": {
-      "age": 28,
-      "gender": "Male",
+      "age": 74,
+      "gender": "Female",
       "region": "Flanders",
       "language": "Dutch"
     },
     "work": {
-      "status": "working",
-      "job": "Primary-school teacher"
+      "status": "retired",
+      "job": "retired",
+      "former": "bank_clerk"
     },
     "economics": {
       "netMonthlyIncome": 2850,
-      "netWealth": 140000,
+      "netWealth": 524000,
       "incomePercentile": 68.5,
-      "wealthPercentile": 48.5,
+      "wealthPercentile": 84.5,
       "homesOwned": 1
     }
   },
   {
     "id": 70,
-    "name": "Marc",
+    "name": "Dries",
     "demographics": {
-      "age": 69,
+      "age": 63,
       "gender": "Male",
       "region": "Flanders",
       "language": "Dutch"
     },
     "work": {
       "status": "retired",
-      "job": "Retired — former railway engineer"
+      "job": "retired",
+      "former": "teacher"
     },
     "economics": {
       "netMonthlyIncome": 2880,
-      "netWealth": 639000,
+      "netWealth": 547000,
       "incomePercentile": 69.5,
-      "wealthPercentile": 89.5,
+      "wealthPercentile": 85.5,
       "homesOwned": 1
     }
   },
   {
     "id": 71,
-    "name": "Wim",
+    "name": "Marieke",
     "demographics": {
-      "age": 40,
+      "age": 81,
+      "gender": "Female",
+      "region": "Flanders",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "retired",
+      "job": "retired",
+      "former": "civil_servant"
+    },
+    "economics": {
+      "netMonthlyIncome": 2920,
+      "netWealth": 860000,
+      "incomePercentile": 70.5,
+      "wealthPercentile": 93.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 72,
+    "name": "Greet",
+    "demographics": {
+      "age": 78,
+      "gender": "Female",
+      "region": "Flanders",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "retired",
+      "job": "retired",
+      "former": "bank_clerk"
+    },
+    "economics": {
+      "netMonthlyIncome": 2970,
+      "netWealth": 616000,
+      "incomePercentile": 71.5,
+      "wealthPercentile": 88.5,
+      "homesOwned": 2
+    }
+  },
+  {
+    "id": 73,
+    "name": "Veerle",
+    "demographics": {
+      "age": 24,
+      "gender": "Female",
+      "region": "Flanders",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "working",
+      "job": "lab_technician"
+    },
+    "economics": {
+      "netMonthlyIncome": 3010,
+      "netWealth": 212000,
+      "incomePercentile": 72.5,
+      "wealthPercentile": 59.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 74,
+    "name": "Pierre",
+    "demographics": {
+      "age": 52,
+      "gender": "Male",
+      "region": "Brussels",
+      "language": "French"
+    },
+    "work": {
+      "status": "working",
+      "job": "secondary_teacher"
+    },
+    "economics": {
+      "netMonthlyIncome": 3060,
+      "netWealth": 245000,
+      "incomePercentile": 73.5,
+      "wealthPercentile": 63.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 75,
+    "name": "Karim",
+    "demographics": {
+      "age": 38,
+      "gender": "Male",
+      "region": "Wallonia",
+      "language": "French"
+    },
+    "work": {
+      "status": "working",
+      "job": "lab_technician"
+    },
+    "economics": {
+      "netMonthlyIncome": 3100,
+      "netWealth": 253000,
+      "incomePercentile": 74.5,
+      "wealthPercentile": 64.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 76,
+    "name": "Kris",
+    "demographics": {
+      "age": 65,
+      "gender": "Male",
+      "region": "Flanders",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "retired",
+      "job": "retired",
+      "former": "doctor"
+    },
+    "economics": {
+      "netMonthlyIncome": 3150,
+      "netWealth": 800000,
+      "incomePercentile": 75.5,
+      "wealthPercentile": 92.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 77,
+    "name": "Bilal",
+    "demographics": {
+      "age": 30,
       "gender": "Male",
       "region": "Flanders",
       "language": "Dutch"
     },
     "work": {
       "status": "working",
-      "job": "Nurse"
+      "job": "secondary_teacher"
     },
     "economics": {
-      "netMonthlyIncome": 2920,
-      "netWealth": 262000,
-      "incomePercentile": 70.5,
-      "wealthPercentile": 65.5,
+      "netMonthlyIncome": 3190,
+      "netWealth": 160000,
+      "incomePercentile": 76.5,
+      "wealthPercentile": 51.5,
       "homesOwned": 1
     }
   },
   {
-    "id": 72,
-    "name": "Jan",
+    "id": 78,
+    "name": "Ahmed",
+    "demographics": {
+      "age": 59,
+      "gender": "Male",
+      "region": "Wallonia",
+      "language": "French"
+    },
+    "work": {
+      "status": "working",
+      "job": "social_worker"
+    },
+    "economics": {
+      "netMonthlyIncome": 3240,
+      "netWealth": 740000,
+      "incomePercentile": 77.5,
+      "wealthPercentile": 91.5,
+      "homesOwned": 2
+    }
+  },
+  {
+    "id": 79,
+    "name": "Sofie",
+    "demographics": {
+      "age": 73,
+      "gender": "Female",
+      "region": "Flanders",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "retired",
+      "job": "retired",
+      "former": "company_manager"
+    },
+    "economics": {
+      "netMonthlyIncome": 3280,
+      "netWealth": 639000,
+      "incomePercentile": 78.5,
+      "wealthPercentile": 89.5,
+      "homesOwned": 2
+    }
+  },
+  {
+    "id": 80,
+    "name": "Francesca",
+    "demographics": {
+      "age": 74,
+      "gender": "Female",
+      "region": "Wallonia",
+      "language": "French"
+    },
+    "work": {
+      "status": "retired",
+      "job": "retired",
+      "former": "senior_civil_servant"
+    },
+    "economics": {
+      "netMonthlyIncome": 3330,
+      "netWealth": 920000,
+      "incomePercentile": 79.5,
+      "wealthPercentile": 94.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 81,
+    "name": "Katrien",
+    "demographics": {
+      "age": 56,
+      "gender": "Female",
+      "region": "Flanders",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "working",
+      "job": "social_worker"
+    },
+    "economics": {
+      "netMonthlyIncome": 3390,
+      "netWealth": 306000,
+      "incomePercentile": 80.5,
+      "wealthPercentile": 70.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 82,
+    "name": "Lien",
+    "demographics": {
+      "age": 58,
+      "gender": "Female",
+      "region": "Flanders",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "working",
+      "job": "lab_technician"
+    },
+    "economics": {
+      "netMonthlyIncome": 3460,
+      "netWealth": 402000,
+      "incomePercentile": 81.5,
+      "wealthPercentile": 78.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 83,
+    "name": "Pieter",
+    "demographics": {
+      "age": 41,
+      "gender": "Male",
+      "region": "Flanders",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "working",
+      "job": "engineer"
+    },
+    "economics": {
+      "netMonthlyIncome": 3540,
+      "netWealth": 501000,
+      "incomePercentile": 82.5,
+      "wealthPercentile": 83.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 84,
+    "name": "Jeanne",
+    "demographics": {
+      "age": 51,
+      "gender": "Female",
+      "region": "Wallonia",
+      "language": "French"
+    },
+    "work": {
+      "status": "working",
+      "job": "federal_civil_servant"
+    },
+    "economics": {
+      "netMonthlyIncome": 3610,
+      "netWealth": 680000,
+      "incomePercentile": 83.5,
+      "wealthPercentile": 90.5,
+      "homesOwned": 2
+    }
+  },
+  {
+    "id": 85,
+    "name": "Jasper",
+    "demographics": {
+      "age": 64,
+      "gender": "Male",
+      "region": "Flanders",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "retired",
+      "job": "retired",
+      "former": "doctor"
+    },
+    "economics": {
+      "netMonthlyIncome": 3690,
+      "netWealth": 570000,
+      "incomePercentile": 84.5,
+      "wealthPercentile": 86.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 86,
+    "name": "Bart",
     "demographics": {
       "age": 53,
       "gender": "Male",
@@ -1510,439 +1831,252 @@ export const profiles = [
     },
     "work": {
       "status": "working",
-      "job": "Nurse"
+      "job": "project_manager"
     },
     "economics": {
-      "netMonthlyIncome": 2970,
-      "netWealth": 306000,
-      "incomePercentile": 71.5,
-      "wealthPercentile": 70.5,
-      "homesOwned": 1
+      "netMonthlyIncome": 3760,
+      "netWealth": 593000,
+      "incomePercentile": 85.5,
+      "wealthPercentile": 87.5,
+      "homesOwned": 2
     }
   },
   {
-    "id": 73,
-    "name": "Youssef",
-    "demographics": {
-      "age": 67,
-      "gender": "Male",
-      "region": "Flanders",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "retired",
-      "job": "Retired — former notary"
-    },
-    "economics": {
-      "netMonthlyIncome": 3010,
-      "netWealth": 680000,
-      "incomePercentile": 72.5,
-      "wealthPercentile": 90.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 74,
-    "name": "Sophie",
-    "demographics": {
-      "age": 39,
-      "gender": "Female",
-      "region": "Wallonia",
-      "language": "French"
-    },
-    "work": {
-      "status": "working",
-      "job": "Secondary-school teacher"
-    },
-    "economics": {
-      "netMonthlyIncome": 3060,
-      "netWealth": 296000,
-      "incomePercentile": 73.5,
-      "wealthPercentile": 69.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 75,
-    "name": "Stijn",
+    "id": 87,
+    "name": "Ilse",
     "demographics": {
       "age": 36,
-      "gender": "Male",
+      "gender": "Female",
       "region": "Flanders",
       "language": "Dutch"
     },
     "work": {
       "status": "working",
-      "job": "Lab technician"
+      "job": "it_developer"
     },
     "economics": {
-      "netMonthlyIncome": 3100,
+      "netMonthlyIncome": 3840,
       "netWealth": 318000,
-      "incomePercentile": 74.5,
+      "incomePercentile": 86.5,
       "wealthPercentile": 71.5,
       "homesOwned": 1
     }
   },
   {
-    "id": 76,
-    "name": "Jeanne",
+    "id": 88,
+    "name": "Quentin",
     "demographics": {
-      "age": 70,
-      "gender": "Female",
+      "age": 54,
+      "gender": "Male",
       "region": "Brussels",
       "language": "French"
     },
     "work": {
-      "status": "retired",
-      "job": "Retired — former company manager"
-    },
-    "economics": {
-      "netMonthlyIncome": 3150,
-      "netWealth": 432000,
-      "incomePercentile": 75.5,
-      "wealthPercentile": 80.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 77,
-    "name": "Louis",
-    "demographics": {
-      "age": 22,
-      "gender": "Male",
-      "region": "Wallonia",
-      "language": "French"
-    },
-    "work": {
       "status": "working",
-      "job": "Walloon Region civil servant"
+      "job": "it_developer"
     },
     "economics": {
-      "netMonthlyIncome": 3190,
-      "netWealth": 95000,
-      "incomePercentile": 76.5,
-      "wealthPercentile": 41.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 78,
-    "name": "Femke",
-    "demographics": {
-      "age": 84,
-      "gender": "Female",
-      "region": "Flanders",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "retired",
-      "job": "Retired — former company manager"
-    },
-    "economics": {
-      "netMonthlyIncome": 3240,
-      "netWealth": 860000,
-      "incomePercentile": 77.5,
-      "wealthPercentile": 93.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 79,
-    "name": "Katrien",
-    "demographics": {
-      "age": 64,
-      "gender": "Female",
-      "region": "Flanders",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "working",
-      "job": "Accountant"
-    },
-    "economics": {
-      "netMonthlyIncome": 3280,
-      "netWealth": 920000,
-      "incomePercentile": 78.5,
-      "wealthPercentile": 94.5,
-      "homesOwned": 2
-    }
-  },
-  {
-    "id": 80,
-    "name": "Nathalie",
-    "demographics": {
-      "age": 31,
-      "gender": "Female",
-      "region": "Wallonia",
-      "language": "French"
-    },
-    "work": {
-      "status": "working",
-      "job": "Accountant"
-    },
-    "economics": {
-      "netMonthlyIncome": 3330,
-      "netWealth": 160000,
-      "incomePercentile": 79.5,
-      "wealthPercentile": 51.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 81,
-    "name": "Tine",
-    "demographics": {
-      "age": 40,
-      "gender": "Female",
-      "region": "Flanders",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "working",
-      "job": "Lab technician"
-    },
-    "economics": {
-      "netMonthlyIncome": 3390,
-      "netWealth": 501000,
-      "incomePercentile": 80.5,
-      "wealthPercentile": 83.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 82,
-    "name": "Els",
-    "demographics": {
-      "age": 41,
-      "gender": "Female",
-      "region": "Flanders",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "working",
-      "job": "Flemish government civil servant"
-    },
-    "economics": {
-      "netMonthlyIncome": 3460,
+      "netMonthlyIncome": 3910,
       "netWealth": 478000,
-      "incomePercentile": 81.5,
+      "incomePercentile": 87.5,
       "wealthPercentile": 82.5,
       "homesOwned": 1
     }
   },
   {
-    "id": 83,
-    "name": "Greet",
+    "id": 89,
+    "name": "An",
     "demographics": {
-      "age": 54,
+      "age": 52,
       "gender": "Female",
       "region": "Flanders",
       "language": "Dutch"
     },
     "work": {
       "status": "working",
-      "job": "IT developer"
+      "job": "federal_civil_servant"
     },
     "economics": {
-      "netMonthlyIncome": 3540,
-      "netWealth": 390000,
-      "incomePercentile": 82.5,
-      "wealthPercentile": 77.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 84,
-    "name": "Yasmina",
-    "demographics": {
-      "age": 36,
-      "gender": "Female",
-      "region": "Flanders",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "working",
-      "job": "IT developer"
-    },
-    "economics": {
-      "netMonthlyIncome": 3610,
+      "netMonthlyIncome": 3990,
       "netWealth": 342000,
-      "incomePercentile": 83.5,
+      "incomePercentile": 88.5,
       "wealthPercentile": 73.5,
       "homesOwned": 1
     }
   },
   {
-    "id": 85,
-    "name": "Els",
+    "id": 90,
+    "name": "Joris",
     "demographics": {
-      "age": 76,
-      "gender": "Female",
-      "region": "Flanders",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "retired",
-      "job": "Retired — former doctor"
-    },
-    "economics": {
-      "netMonthlyIncome": 3690,
-      "netWealth": 2219000,
-      "incomePercentile": 84.5,
-      "wealthPercentile": 98.5,
-      "homesOwned": 3
-    }
-  },
-  {
-    "id": 86,
-    "name": "Rita",
-    "demographics": {
-      "age": 55,
-      "gender": "Female",
-      "region": "Flanders",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "working",
-      "job": "Project manager"
-    },
-    "economics": {
-      "netMonthlyIncome": 3760,
-      "netWealth": 455000,
-      "incomePercentile": 85.5,
-      "wealthPercentile": 81.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 87,
-    "name": "Tom",
-    "demographics": {
-      "age": 52,
+      "age": 31,
       "gender": "Male",
       "region": "Flanders",
       "language": "Dutch"
     },
     "work": {
       "status": "working",
-      "job": "IT developer"
+      "job": "engineer"
     },
     "economics": {
-      "netMonthlyIncome": 3840,
-      "netWealth": 402000,
-      "incomePercentile": 86.5,
-      "wealthPercentile": 78.5,
+      "netMonthlyIncome": 4060,
+      "netWealth": 378000,
+      "incomePercentile": 89.5,
+      "wealthPercentile": 76.5,
       "homesOwned": 1
     }
   },
   {
-    "id": 88,
-    "name": "Jeanne",
+    "id": 91,
+    "name": "Fien",
     "demographics": {
-      "age": 56,
+      "age": 47,
       "gender": "Female",
-      "region": "Brussels",
+      "region": "Flanders",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "working",
+      "job": "project_manager"
+    },
+    "economics": {
+      "netMonthlyIncome": 4190,
+      "netWealth": 455000,
+      "incomePercentile": 90.5,
+      "wealthPercentile": 81.5,
+      "homesOwned": 1
+    }
+  },
+  {
+    "id": 92,
+    "name": "Giulia",
+    "demographics": {
+      "age": 36,
+      "gender": "Female",
+      "region": "Wallonia",
       "language": "French"
     },
     "work": {
       "status": "working",
-      "job": "Project manager"
+      "job": "university_lecturer"
     },
     "economics": {
-      "netMonthlyIncome": 3910,
-      "netWealth": 800000,
-      "incomePercentile": 87.5,
-      "wealthPercentile": 92.5,
+      "netMonthlyIncome": 4370,
+      "netWealth": 414000,
+      "incomePercentile": 91.5,
+      "wealthPercentile": 79.5,
       "homesOwned": 1
     }
   },
   {
-    "id": 89,
-    "name": "Maxime",
+    "id": 93,
+    "name": "Ilias",
     "demographics": {
-      "age": 43,
+      "age": 44,
       "gender": "Male",
       "region": "Wallonia",
       "language": "French"
     },
     "work": {
       "status": "working",
-      "job": "IT developer"
+      "job": "university_lecturer"
     },
     "economics": {
-      "netMonthlyIncome": 3990,
+      "netMonthlyIncome": 4550,
       "netWealth": 354000,
-      "incomePercentile": 88.5,
+      "incomePercentile": 92.5,
       "wealthPercentile": 74.5,
       "homesOwned": 1
     }
   },
   {
-    "id": 90,
-    "name": "Isabelle",
+    "id": 94,
+    "name": "Karel",
     "demographics": {
-      "age": 63,
-      "gender": "Female",
+      "age": 33,
+      "gender": "Male",
       "region": "Brussels",
-      "language": "French"
+      "language": "Dutch"
     },
     "work": {
-      "status": "retired",
-      "job": "Retired — former senior civil servant"
+      "status": "working",
+      "job": "university_lecturer"
     },
     "economics": {
-      "netMonthlyIncome": 4060,
-      "netWealth": 1494000,
-      "incomePercentile": 89.5,
-      "wealthPercentile": 96.5,
-      "homesOwned": 2
+      "netMonthlyIncome": 4730,
+      "netWealth": 330000,
+      "incomePercentile": 93.5,
+      "wealthPercentile": 72.5,
+      "homesOwned": 1
     }
   },
   {
-    "id": 91,
-    "name": "Lars",
+    "id": 95,
+    "name": "Ludo",
     "demographics": {
-      "age": 44,
+      "age": 69,
       "gender": "Male",
       "region": "Flanders",
       "language": "Dutch"
     },
     "work": {
-      "status": "working",
-      "job": "IT developer"
+      "status": "retired",
+      "job": "retired",
+      "former": "doctor"
     },
     "economics": {
-      "netMonthlyIncome": 4190,
-      "netWealth": 366000,
-      "incomePercentile": 90.5,
-      "wealthPercentile": 75.5,
+      "netMonthlyIncome": 4910,
+      "netWealth": 390000,
+      "incomePercentile": 94.5,
+      "wealthPercentile": 77.5,
       "homesOwned": 1
     }
   },
   {
-    "id": 92,
-    "name": "Hugo",
+    "id": 96,
+    "name": "Théo",
     "demographics": {
-      "age": 57,
+      "age": 48,
       "gender": "Male",
-      "region": "Brussels",
+      "region": "Wallonia",
       "language": "French"
     },
     "work": {
       "status": "working",
-      "job": "University lecturer"
+      "job": "gp"
     },
     "economics": {
-      "netMonthlyIncome": 4370,
+      "netMonthlyIncome": 5380,
       "netWealth": 1131000,
-      "incomePercentile": 91.5,
+      "incomePercentile": 95.5,
       "wealthPercentile": 95.5,
       "homesOwned": 1
     }
   },
   {
-    "id": 93,
-    "name": "Robbe",
+    "id": 97,
+    "name": "Jolien",
+    "demographics": {
+      "age": 60,
+      "gender": "Female",
+      "region": "Flanders",
+      "language": "Dutch"
+    },
+    "work": {
+      "status": "retired",
+      "job": "retired",
+      "former": "senior_civil_servant"
+    },
+    "economics": {
+      "netMonthlyIncome": 6130,
+      "netWealth": 1494000,
+      "incomePercentile": 96.5,
+      "wealthPercentile": 96.5,
+      "homesOwned": 3
+    }
+  },
+  {
+    "id": 98,
+    "name": "Lars",
     "demographics": {
       "age": 60,
       "gender": "Male",
@@ -1951,161 +2085,57 @@ export const profiles = [
     },
     "work": {
       "status": "working",
-      "job": "Senior engineer"
+      "job": "company_director"
     },
     "economics": {
-      "netMonthlyIncome": 4550,
+      "netMonthlyIncome": 6880,
       "netWealth": 1856000,
-      "incomePercentile": 92.5,
+      "incomePercentile": 97.5,
       "wealthPercentile": 97.5,
       "homesOwned": 2
     }
   },
   {
-    "id": 94,
-    "name": "Émilie",
-    "demographics": {
-      "age": 38,
-      "gender": "Female",
-      "region": "Wallonia",
-      "language": "French"
-    },
-    "work": {
-      "status": "working",
-      "job": "University lecturer"
-    },
-    "economics": {
-      "netMonthlyIncome": 4730,
-      "netWealth": 740000,
-      "incomePercentile": 93.5,
-      "wealthPercentile": 91.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 95,
-    "name": "An",
-    "demographics": {
-      "age": 37,
-      "gender": "Female",
-      "region": "Flanders",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "working",
-      "job": "Senior engineer"
-    },
-    "economics": {
-      "netMonthlyIncome": 4910,
-      "netWealth": 524000,
-      "incomePercentile": 94.5,
-      "wealthPercentile": 84.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 96,
-    "name": "Seppe",
-    "demographics": {
-      "age": 35,
-      "gender": "Male",
-      "region": "Flanders",
-      "language": "Dutch"
-    },
-    "work": {
-      "status": "working",
-      "job": "Self-employed architect"
-    },
-    "economics": {
-      "netMonthlyIncome": 5380,
-      "netWealth": 414000,
-      "incomePercentile": 95.5,
-      "wealthPercentile": 79.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 97,
-    "name": "Nathalie",
-    "demographics": {
-      "age": 44,
-      "gender": "Female",
-      "region": "Wallonia",
-      "language": "French"
-    },
-    "work": {
-      "status": "working",
-      "job": "Senior manager"
-    },
-    "economics": {
-      "netMonthlyIncome": 6130,
-      "netWealth": 547000,
-      "incomePercentile": 96.5,
-      "wealthPercentile": 85.5,
-      "homesOwned": 1
-    }
-  },
-  {
-    "id": 98,
+    "id": 99,
     "name": "Youssef",
     "demographics": {
-      "age": 74,
+      "age": 46,
       "gender": "Male",
       "region": "Flanders",
       "language": "Dutch"
     },
     "work": {
-      "status": "retired",
-      "job": "Retired — former notary"
-    },
-    "economics": {
-      "netMonthlyIncome": 6880,
-      "netWealth": 4800000,
-      "incomePercentile": 97.5,
-      "wealthPercentile": 99.5,
-      "homesOwned": 3
-    }
-  },
-  {
-    "id": 99,
-    "name": "Colette",
-    "demographics": {
-      "age": 47,
-      "gender": "Female",
-      "region": "Wallonia",
-      "language": "French"
-    },
-    "work": {
       "status": "working",
-      "job": "Member of Parliament"
+      "job": "company_director"
     },
     "economics": {
       "netMonthlyIncome": 7630,
-      "netWealth": 593000,
+      "netWealth": 2219000,
       "incomePercentile": 98.5,
-      "wealthPercentile": 87.5,
+      "wealthPercentile": 98.5,
       "homesOwned": 2
     }
   },
   {
     "id": 100,
-    "name": "Lotte",
+    "name": "Tine",
     "demographics": {
-      "age": 45,
+      "age": 80,
       "gender": "Female",
       "region": "Flanders",
       "language": "Dutch"
     },
     "work": {
-      "status": "working",
-      "job": "CEO of an SME"
+      "status": "retired",
+      "job": "retired",
+      "former": "company_manager"
     },
     "economics": {
-      "netMonthlyIncome": 11000,
-      "netWealth": 570000,
+      "netMonthlyIncome": 14500,
+      "netWealth": 4800000,
       "incomePercentile": 99.5,
-      "wealthPercentile": 86.5,
-      "homesOwned": 1
+      "wealthPercentile": 99.5,
+      "homesOwned": 2
     }
   }
 ];
